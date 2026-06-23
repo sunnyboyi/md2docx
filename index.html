@@ -7,7 +7,7 @@
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts - Inter & Playfair Display -->
+  <!-- Google Fonts - Inter & Noto Sans TC -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -15,10 +15,10 @@
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <!-- FileSaver.js for client-side file saving -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-  <!-- JSZip for dynamic DOCX package manipulation -->
+  <!-- JSZip for batch packaging -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-  <!-- html-docx-js for converting HTML to DOCX -->
-  <script src="https://cdn.jsdelivr.net/npm/html-docx-js@0.3.1/dist/html-docx.js"></script>
+  <!-- docx.js UMD - The standard, pure native WordprocessingML generator (Replaced with verified stable jsDelivr URL) -->
+  <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.min.js"></script>
 
   <script>
     // Tailwind configuration for custom theme and dark mode
@@ -103,7 +103,7 @@
         <h1 class="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
           Markdown 轉 Word (DOCX) 專業排版工具
         </h1>
-        <p class="text-xs text-slate-500 dark:text-slate-400">本地編譯無上傳 • 隱私安全 • 支援多檔打包 ZIP 下載</p>
+        <p class="text-xs text-slate-500 dark:text-slate-400">本地編譯無上傳 • 100% Native OOXML 標準格式 • 支援多檔打包 ZIP 下載</p>
       </div>
     </div>
 
@@ -250,7 +250,7 @@
           </div>
         </div>
 
-        <!-- Tab 1.5: Batch Converter (NEW) -->
+        <!-- Tab 1.5: Batch Converter -->
         <div id="batch-tab" class="hidden h-full flex flex-col gap-5">
           <!-- Info Note -->
           <div class="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900 rounded-xl p-4 flex gap-3 items-start">
@@ -259,7 +259,7 @@
               <p class="font-bold mb-1">💡 批次轉換說明：</p>
               <p>1. 拖曳或選擇多個 Markdown (.md) 或文字檔 (.txt) 到下方虛線區塊。</p>
               <p>2. 系統將使用您在<b>「排版與輸出設定」</b>分頁中所設定的主題與紙張大小進行編譯排版。</p>
-              <p>3. 轉換完成後，所有檔案將一鍵<b>打包為 ZIP 壓縮檔</b>下載。完全在您本機端執行，無資料外洩風險！</p>
+              <p>3. 轉換完成後，所有檔案將由瀏覽器直接編譯為<b>微軟標準 XML 二進位 (.docx) 檔</b>並打包 ZIP 下載。完全在您本機端執行，無資料外洩風險！</p>
             </div>
           </div>
 
@@ -553,7 +553,7 @@
   </footer>
 
   <script>
-    /* Document Theme CSS Definitions to load into dynamic-preview-styles */
+    /* Document Theme CSS Definitions to load into dynamic-preview-styles (ONLY FOR WEB PREVIEW) */
     const THEMES = {
       business: {
         name: "專業商務報告 (Business Report)",
@@ -991,33 +991,22 @@
       }
     };
 
+    // Margins (expressed in standard twips: 1440 twips = 1 inch = 2.54 cm)
     const MARGIN_PRESETS = {
-      normal: { top: 1440, bottom: 1440, left: 1440, right: 1440 }, // 1 inch = 1440 twips
-      narrow: { top: 720, bottom: 720, left: 720, right: 720 },     // 0.5 inch
-      wide: { top: 1440, bottom: 1440, left: 2880, right: 2880 }     // 2 inch margins left/right
+      normal: { top: 1440, bottom: 1440, left: 1440, right: 1440 }, 
+      narrow: { top: 720, bottom: 720, left: 720, right: 720 },     
+      wide: { top: 1440, bottom: 1440, left: 2880, right: 2880 }     
     };
 
-    // Standard Paper Size Definitions for exporting & layout calculations (Twips and css definitions)
+    // Standard Paper Size Definitions (docx twips dimensions)
     const PAPER_SIZES = {
       A4: {
-        portrait: { width: 11906, height: 16838, name: "A4", cssWidth: "210mm", cssHeight: "297mm", maxPreviewWidth: "850px", minPreviewHeight: "297mm" },
-        landscape: { width: 16838, height: 11906, name: "A4", cssWidth: "297mm", cssHeight: "210mm", maxPreviewWidth: "1200px", minPreviewHeight: "210mm" }
+        portrait: { width: 11906, height: 16838, name: "A4", maxPreviewWidth: "850px", minPreviewHeight: "297mm" },
+        landscape: { width: 16838, height: 11906, name: "A4", maxPreviewWidth: "1200px", minPreviewHeight: "210mm" }
       },
       A3: {
-        portrait: { width: 16838, height: 23811, name: "A3", cssWidth: "297mm", cssHeight: "420mm", maxPreviewWidth: "1100px", minPreviewHeight: "420mm" },
-        landscape: { width: 23811, height: 16838, name: "A3", cssWidth: "420mm", cssHeight: "297mm", maxPreviewWidth: "1550px", minPreviewHeight: "297mm" }
-      }
-    };
-
-    // Explicit dimensions in cm for MHTML / Word XML parser compatibility
-    const WORD_PAGE_SIZES = {
-      A4: {
-        portrait: { width: "21.0cm", height: "29.7cm" },
-        landscape: { width: "29.7cm", height: "21.0cm" }
-      },
-      A3: {
-        portrait: { width: "29.7cm", height: "42.0cm" },
-        landscape: { width: "42.0cm", height: "29.7cm" }
+        portrait: { width: 16838, height: 23811, name: "A3", maxPreviewWidth: "1100px", minPreviewHeight: "420mm" },
+        landscape: { width: 23811, height: 16838, name: "A3", maxPreviewWidth: "1550px", minPreviewHeight: "297mm" }
       }
     };
   </script>
@@ -1110,7 +1099,7 @@
 隨著全球氣候變遷加劇，各國政府紛紛將「綠能轉型」納入國家核心發展戰略。智慧城市（Smart City）概念透過物聯網（IoT）、人工智慧（AI）與大數據（Big Data）等技術，能有效對城市運作進行數位化管理，達到節能、減排、提效的最終目標。
 
 ### 1.1 研究動機與目的
-- **評估政策成傷**：釐清各縣市綠能推動之實際碳減排數據。
+- **評估政策成效**：釐清各縣市綠能推動之實際碳減排數據。
 - **找出發展瓶頸**：探討老舊都市電網在併網綠能（如太陽能、風力）時面臨的挑戰。
 
 ## 2. 數據分析與評估
@@ -1205,7 +1194,7 @@ saveAs(blob, 'my_document.docx');
 
 ## 二、 核心素養（對應 108 綱）
 - **A 自主行動**：自-E-A1 具備探索科學問題的思考能力，並展現嘗試與創新的熱忱。
-- **B 溝通互動**：自-E-B1 能運用語言、文字、圖表進行科學現象的溝通與探討。
+- **B 溝通互動**：自-E-B1 能運用語言、文字、圖表進行科學現象的溝通與探問。
 
 ## 三、 Teaching Preparations
 - **教師準備**：太陽能發電演示模組、互動簡報、綠能介紹短片、組裝套件。
@@ -1249,7 +1238,7 @@ saveAs(blob, 'my_document.docx');
 | **3. 周邊環境** | 設有精緻綠化庭園，遊客與外國觀光客眾多，現場備有多國語言解說牌。 | ⭐⭐⭐⭐⭐ |
 
 ## 📝 學習任務三：我的反思與小組討論
-> **問題思考**：古蹟是歷史的重要見證。如果古蹟因為地震受損，或是影響到都市捷運的開發進度，你覺得應該要原地花大錢修復保存，還是拆除以利現代化開發？為什麼？
+> **問題思考**：古蹟是歷史的重要見證。如果古蹟因為地震受損，或是影響到都市捷運的開發進度，你覺得要原地花大錢修復保存，還是拆除以利現代化開發？為什麼？
 >
 > **我的想法**：我認為應該要原地修復保存。因為古蹟一旦被拆掉，歷史的記憶與實體資產就再也無法還原了。雖然捷運很方便，但城市的文化底蘊是無法用金錢衡量的。
 
@@ -1559,7 +1548,7 @@ saveAs(blob, 'my_document.docx');
   </script>
 
   <script>
-    // Helper to scope global css styles specifically to target classes
+    // Helper to scope global css styles specifically to target classes (For web simulation ONLY)
     function scopeCSS(cssString, scopeSelector) {
       return cssString
         .split('}')
@@ -1579,7 +1568,6 @@ saveAs(blob, 'my_document.docx');
               if (trimmed.startsWith('@') || trimmed === '') {
                 return trimmed;
               }
-              // If the selector already starts with scopeSelector, prevent double nesting
               if (trimmed.startsWith(scopeSelector)) {
                 return trimmed;
               }
@@ -1713,7 +1701,7 @@ saveAs(blob, 'my_document.docx');
   </script>
 
   <script>
-    // Update rendered HTML view
+    // Update rendered HTML view (Just for screen preview)
     function updatePreview() {
       const mdText = document.getElementById('markdown-input').value;
       const previewContent = document.getElementById('preview-content');
@@ -1723,7 +1711,6 @@ saveAs(blob, 'my_document.docx');
 
       previewContent.innerHTML = tempDiv.innerHTML;
       
-      // Keep local preview in sync if it is currently visible
       if (currentEditorMode === 'preview') {
         updateLocalEditorPreview();
       }
@@ -1743,36 +1730,28 @@ saveAs(blob, 'my_document.docx');
       const textarea = document.getElementById('markdown-input');
       const localPreview = document.getElementById('editor-preview');
       
-      // Select only toolbar shortcut buttons to disable
       const toolbarButtons = document.querySelectorAll('#editor-toolbar button');
 
       if (mode === 'write') {
-        // Toggle tabs active styles
         writeBtn.className = "px-3 py-1 text-xs font-semibold rounded-md bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 shadow-sm flex items-center gap-1.5 transition";
         previewBtn.className = "px-3 py-1 text-xs font-semibold rounded-md text-slate-600 dark:text-slate-400 flex items-center gap-1.5 transition";
         
-        // Show textarea, hide local preview
         textarea.classList.remove('hidden');
         localPreview.classList.add('hidden');
         
-        // Enable toolbar buttons
         toolbarButtons.forEach(btn => {
           btn.disabled = false;
           btn.classList.remove('opacity-40', 'cursor-not-allowed');
         });
       } else {
-        // Toggle tabs active styles
         previewBtn.className = "px-3 py-1 text-xs font-semibold rounded-md bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 shadow-sm flex items-center gap-1.5 transition";
         writeBtn.className = "px-3 py-1 text-xs font-semibold rounded-md text-slate-600 dark:text-slate-400 flex items-center gap-1.5 transition";
         
-        // Hide textarea, show local preview
         textarea.classList.add('hidden');
         localPreview.classList.remove('hidden');
         
-        // Render updated contents
         updateLocalEditorPreview();
         
-        // Disable toolbar buttons (since you can't edit in preview mode)
         toolbarButtons.forEach(btn => {
           btn.disabled = true;
           btn.classList.add('opacity-40', 'cursor-not-allowed');
@@ -1780,7 +1759,6 @@ saveAs(blob, 'my_document.docx');
       }
     }
 
-    // Dynamic rendering helper inside local workspace
     function updateLocalEditorPreview() {
       const mdText = document.getElementById('markdown-input').value;
       const localPreview = document.getElementById('editor-preview');
@@ -1793,12 +1771,11 @@ saveAs(blob, 'my_document.docx');
   </script>
 
   <script>
-    // General helpers to insert templates in one click
+    // General templates library loaders
     function loadTemplate(templateKey) {
       const editor = document.getElementById('markdown-input');
       const currentContent = editor.value.trim();
       
-      // 所有範本的 trimmed 清單，用於智慧判斷是否有進行過手動修改
       const allTemplates = [
         BASIC_TEMPLATE.trim(),
         RESUME_TEMPLATE.trim(),
@@ -1809,10 +1786,8 @@ saveAs(blob, 'my_document.docx');
         CLASS_RULES_TEMPLATE.trim()
       ];
 
-      // 檢查編輯器內容是否為「未修改的原廠範本」或「全空」
       const isUnmodified = allTemplates.includes(currentContent) || currentContent === "";
 
-      // 只有在使用者真的修改過內容時才進行安全提示
       if (!isUnmodified) {
         if (!confirm("載入新範本將會完全覆蓋您目前修改過的文件，確定要繼續嗎？")) {
           return;
@@ -1821,29 +1796,15 @@ saveAs(blob, 'my_document.docx');
       
       let content = "";
       switch (templateKey) {
-        case 'resume':
-          content = RESUME_TEMPLATE;
-          break;
-        case 'meeting':
-          content = MEETING_TEMPLATE;
-          break;
-        case 'report':
-          content = REPORT_TEMPLATE;
-          break;
-        case 'lesson_plan':
-          content = LESSON_PLAN_TEMPLATE;
-          break;
-        case 'worksheet':
-          content = WORKSHEET_TEMPLATE;
-          break;
-        case 'class_rules':
-          content = CLASS_RULES_TEMPLATE;
-          break;
-        default:
-          content = BASIC_TEMPLATE;
+        case 'resume': content = RESUME_TEMPLATE; break;
+        case 'meeting': content = MEETING_TEMPLATE; break;
+        case 'report': content = REPORT_TEMPLATE; break;
+        case 'lesson_plan': content = LESSON_PLAN_TEMPLATE; break;
+        case 'worksheet': content = WORKSHEET_TEMPLATE; break;
+        case 'class_rules': content = CLASS_RULES_TEMPLATE; break;
+        default: content = BASIC_TEMPLATE;
       }
 
-      // 替換內容並強制切換回寫作模式（以防剛才在預覽中）
       editor.value = content;
       setEditorMode('write');
       
@@ -1851,12 +1812,10 @@ saveAs(blob, 'my_document.docx');
       updateCounters();
       updateDocTitleFromMarkdown();
       
-      // 自動切換回編輯器分頁，提供最流暢的體驗
       switchTab('editor-tab');
       showNotification('success', '範本已成功載入！已為您切換至工作區。');
     }
 
-    // Helper to clear text editor
     function clearEditor() {
       if (confirm("確定要清除所有內容嗎？此操作不可還原。")) {
         document.getElementById('markdown-input').value = "";
@@ -1866,7 +1825,6 @@ saveAs(blob, 'my_document.docx');
       }
     }
 
-    // Insert structured custom table markdown template
     function insertTableTemplate() {
       const tableMarkdown = `
 | 標題一 | 標題二 | 標題三 |
@@ -1877,7 +1835,6 @@ saveAs(blob, 'my_document.docx');
       insertMarkdown(tableMarkdown);
     }
 
-    // Universal helper to inject markdown syntax around text selection
     function insertMarkdown(before, after = "") {
       const textarea = document.getElementById('markdown-input');
       const start = textarea.selectionStart;
@@ -1891,145 +1848,485 @@ saveAs(blob, 'my_document.docx');
       
       textarea.value = originalText.substring(0, start) + replacement + originalText.substring(end);
       
-      // Reposition cursor
       textarea.focus();
       textarea.selectionStart = start + before.length;
       textarea.selectionEnd = start + before.length + actualContent.length;
       
-      // Manually trigger input updating preview pipeline
       onEditorInput();
     }
   </script>
 
+  <!-- ================================================================= -->
+  <!-- 🚀 CORE TRANSLATION ENGINE: Native Markdown to standard OpenXML DOCX -->
+  <!-- ================================================================= -->
   <script>
-    // Export Word 檔案功能與樣式打包 (支援 A3/A4 與完整字型對應)
+    // Recursively parse inline markdown tokens into standard native Word runs
+    function processInlineTokensToNative(tokens, themeOpts, fmt) {
+      const runs = [];
+      if (!tokens) return runs;
+
+      // Defensively reference global docx object
+      const docx = window.docx;
+      if (!docx) return runs;
+
+      // Inherited inline formatting (bold/italics/strike) accumulated through recursion
+      fmt = fmt || {};
+
+      for (const token of tokens) {
+        if (token.type === 'text') {
+          runs.push(new docx.TextRun({
+            text: token.text,
+            font: themeOpts.font,
+            size: themeOpts.size * 2, // docx expects half-points
+            color: themeOpts.color,
+            bold: fmt.bold,
+            italics: fmt.italics,
+            strike: fmt.strike
+          }));
+        } else if (token.type === 'strong') {
+          runs.push(...processInlineTokensToNative(token.tokens, themeOpts, { ...fmt, bold: true }));
+        } else if (token.type === 'em') {
+          runs.push(...processInlineTokensToNative(token.tokens, themeOpts, { ...fmt, italics: true }));
+        } else if (token.type === 'del') {
+          runs.push(...processInlineTokensToNative(token.tokens, themeOpts, { ...fmt, strike: true }));
+        } else if (token.type === 'codespan') {
+          runs.push(new docx.TextRun({
+            text: token.text,
+            font: 'Consolas',
+            size: (themeOpts.size - 1.5) * 2,
+            color: themeOpts.theme === 'technical' ? 'b91c1c' : '475569',
+            bold: fmt.bold,
+            italics: fmt.italics,
+            strike: fmt.strike,
+            shading: {
+              fill: 'f1f5f9',
+              color: 'auto'
+            }
+          }));
+        } else if (token.type === 'link') {
+          runs.push(new docx.ExternalHyperlink({
+            children: [
+              new docx.TextRun({
+                text: token.text,
+                font: themeOpts.font,
+                size: themeOpts.size * 2,
+                color: '2563eb',
+                underline: true,
+                bold: fmt.bold,
+                italics: fmt.italics,
+                strike: fmt.strike
+              })
+            ],
+            link: token.href
+          }));
+        } else if (token.type === 'image') {
+          if (token.href.startsWith('data:image/')) {
+            try {
+              const base64Parts = token.href.split(',');
+              const base64Data = base64Parts[1];
+              const binaryString = window.atob(base64Data);
+              const len = binaryString.length;
+              const bytes = new Uint8Array(len);
+              for (let i = 0; i < len; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+              }
+
+              runs.push(new docx.ImageRun({
+                data: bytes.buffer,
+                transformation: {
+                  width: 450,
+                  height: 300
+                }
+              }));
+            } catch (e) {
+              console.error("Native Image embed error", e);
+              runs.push(new docx.TextRun({
+                text: `[圖片解碼失敗: ${token.text}]`,
+                color: 'ff0000',
+                italics: true
+              }));
+            }
+          } else {
+            // Placeholder text warning for non-local links that cross-origin-block in raw DOCX structures
+            runs.push(new docx.TextRun({
+              text: `[外部連結圖片: ${token.text} - 請拖曳至編輯器轉成本地 Base64]`,
+              color: 'd97706',
+              italics: true
+            }));
+          }
+        } else if (token.type === 'br') {
+          runs.push(new docx.TextRun({ break: 1 }));
+        } else {
+          if (token.tokens) {
+            runs.push(...processInlineTokensToNative(token.tokens, themeOpts, fmt));
+          } else if (token.text) {
+            runs.push(new docx.TextRun({
+              text: token.text,
+              font: themeOpts.font,
+              size: themeOpts.size * 2,
+              color: themeOpts.color,
+              bold: fmt.bold,
+              italics: fmt.italics,
+              strike: fmt.strike
+            }));
+          }
+        }
+      }
+      return runs;
+    }
+
+    // Direct AST Parsing compiler engine to construct pure OpenXML structures
+    async function compileMarkdownToNativeDocument(mdText, documentTitle) {
+      // Security Check: Verify window.docx is defined
+      if (typeof window.docx === 'undefined') {
+        throw new Error('docx 編譯組件尚未完全載入，請稍候重試。若持續發生，請檢查您的網路連線是否正常。');
+      }
+      const docx = window.docx;
+
+      const themeKey = document.getElementById('theme-select').value;
+      const rawFontSelection = document.getElementById('font-select').value;
+      const options = {
+        fontFamily: rawFontSelection.split(',')[0].replace(/'|"/g, '').trim(),
+        fontSize: parseFloat(document.getElementById('fontsize-select').value),
+        lineHeight: parseFloat(document.getElementById('lineheight-select').value)
+      };
+
+      // Extract specific theme definitions
+      let themeOpts = {
+        theme: themeKey,
+        font: options.fontFamily,
+        size: options.fontSize,
+        lineHeight: options.lineHeight,
+        color: '334155' 
+      };
+
+      if (themeKey === 'academic') themeOpts.color = '000000';
+      if (themeKey === 'technical') themeOpts.color = '1e293b';
+      if (themeKey === 'classic') themeOpts.color = '292524';
+
+      const docChildren = [];
+      const tokens = marked.lexer(mdText);
+
+      for (const token of tokens) {
+        if (token.type === 'heading') {
+          let depth = token.depth;
+          let alignment = docx.AlignmentType.LEFT;
+          let bottomBorder = null;
+          let color = themeOpts.color;
+          let size = themeOpts.size;
+          let isBold = true;
+          let isItalics = false;
+
+          // Theme design rules
+          if (themeKey === 'business') {
+            if (depth === 1) {
+              color = '1e3a8a'; size = 20;
+              bottomBorder = { style: docx.BorderStyle.SINGLE, size: 12, color: '3b82f6', space: 6 };
+            } else if (depth === 2) {
+              color = '2563eb'; size = 15;
+            } else if (depth === 3) {
+              color = '1e40af'; size = 13;
+            }
+          } else if (themeKey === 'academic') {
+            color = '000000';
+            if (depth === 1) {
+              size = 16; alignment = docx.AlignmentType.CENTER;
+            } else if (depth === 2) {
+              size = 14;
+            } else if (depth === 3) {
+              size = 12; isItalics = true;
+            }
+          } else if (themeKey === 'technical') {
+            color = '0f172a';
+            if (depth === 1) {
+              size = 20;
+              bottomBorder = { style: docx.BorderStyle.SINGLE, size: 6, color: 'cbd5e1', space: 4 };
+            } else if (depth === 2) {
+              size = 15;
+            } else if (depth === 3) {
+              color = '334155'; size = 12;
+            }
+          } else if (themeKey === 'classic') {
+            isBold = false;
+            if (depth === 1) {
+              color = '7c2d12'; size = 20;
+              bottomBorder = { style: docx.BorderStyle.DASHED, size: 6, color: 'fed7aa', space: 8 };
+            } else if (depth === 2) {
+              color = '9a3412'; size = 15;
+            } else if (depth === 3) {
+              color = 'c2410c'; size = 12.5; isItalics = true;
+            }
+          }
+
+          const headingRuns = processInlineTokensToNative(token.tokens, {
+            ...themeOpts,
+            color: color,
+            size: size
+          }, { bold: isBold, italics: isItalics });
+
+          docChildren.push(new docx.Paragraph({
+            children: headingRuns,
+            alignment: alignment,
+            spacing: {
+              before: 280,
+              after: 140,
+              line: themeOpts.lineHeight * 240
+            },
+            border: bottomBorder ? { bottom: bottomBorder } : undefined,
+            keepWithNext: true
+          }));
+
+        } else if (token.type === 'paragraph') {
+          const paragraphRuns = processInlineTokensToNative(token.tokens, themeOpts);
+          let indent = undefined;
+
+          if (themeKey === 'academic') {
+            indent = { firstLine: 720 }; // APA Paragraph hanging indents
+          }
+
+          docChildren.push(new docx.Paragraph({
+            children: paragraphRuns,
+            indent: indent,
+            spacing: {
+              before: 0,
+              after: 120,
+              line: themeOpts.lineHeight * 240
+            }
+          }));
+
+        } else if (token.type === 'blockquote') {
+          const borderStyleColor = themeKey === 'business' ? '3b82f6' :
+                                   themeKey === 'academic' ? '000000' :
+                                   themeKey === 'technical' ? '64748b' : 'd97706';
+          const shadingFill = themeKey === 'business' ? 'f1f5f9' :
+                              themeKey === 'academic' ? 'ffffff' :
+                              themeKey === 'technical' ? 'f8fafc' : 'fffbeb';
+
+          if (token.tokens) {
+            token.tokens.forEach(bqBlock => {
+              if (bqBlock.type === 'paragraph') {
+                const bqRuns = processInlineTokensToNative(bqBlock.tokens, {
+                  ...themeOpts,
+                  color: themeKey === 'classic' ? '78350f' : themeOpts.color
+                }, themeKey === 'classic' ? { italics: true } : {});
+
+                docChildren.push(new docx.Paragraph({
+                  children: bqRuns,
+                  indent: { left: 480 },
+                  shading: { fill: shadingFill },
+                  border: {
+                    left: {
+                      style: docx.BorderStyle.SINGLE,
+                      size: 24, // 3pt
+                      color: borderStyleColor,
+                      space: 12
+                    }
+                  },
+                  spacing: {
+                    before: 60,
+                    after: 60,
+                    line: themeOpts.lineHeight * 240
+                  }
+                }));
+              }
+            });
+          }
+
+        } else if (token.type === 'code') {
+          const codeLines = token.text.split('\n');
+          const codingBg = themeKey === 'technical' ? '0f172a' : 'f8fafc';
+          const codingColor = themeKey === 'technical' ? 'f8fafc' : '334155';
+
+          codeLines.forEach((line, index) => {
+            docChildren.push(new docx.Paragraph({
+              children: [
+                new docx.TextRun({
+                  text: line,
+                  font: 'Consolas',
+                  size: 9.5 * 2,
+                  color: codingColor
+                })
+              ],
+              indent: { left: 360 },
+              shading: { fill: codingBg },
+              spacing: {
+                before: index === 0 ? 120 : 0,
+                after: index === codeLines.length - 1 ? 120 : 0,
+                line: 240
+              }
+            }));
+          });
+
+        } else if (token.type === 'hr') {
+          docChildren.push(new docx.Paragraph({
+            border: {
+              bottom: {
+                style: docx.BorderStyle.SINGLE,
+                size: 6,
+                color: 'cbd5e1',
+                space: 1
+              }
+            },
+            spacing: { before: 240, after: 240 }
+          }));
+
+        } else if (token.type === 'list') {
+          token.items.forEach((item, itemIdx) => {
+            const listRuns = [];
+            if (item.tokens) {
+              item.tokens.forEach(itemBlock => {
+                if (itemBlock.type === 'text' || itemBlock.type === 'text') {
+                  listRuns.push(...processInlineTokensToNative(itemBlock.tokens || [itemBlock], themeOpts));
+                } else if (itemBlock.type === 'paragraph') {
+                  listRuns.push(...processInlineTokensToNative(itemBlock.tokens, themeOpts));
+                }
+              });
+            }
+
+            const prefixText = token.ordered ? `${itemIdx + 1}.  ` : "•  ";
+
+            docChildren.push(new docx.Paragraph({
+              indent: { left: 480, hanging: 240 },
+              children: [
+                new docx.TextRun({
+                  text: prefixText,
+                  font: themeOpts.font,
+                  size: themeOpts.size * 2,
+                  bold: true,
+                  color: themeOpts.color
+                }),
+                ...listRuns
+              ],
+              spacing: {
+                before: 0,
+                after: 60,
+                line: themeOpts.lineHeight * 240
+              }
+            }));
+          });
+
+        } else if (token.type === 'table') {
+          const headerRowCells = token.header.map(cell => {
+            const cellRuns = processInlineTokensToNative(cell.tokens, {
+              ...themeOpts,
+              color: themeKey === 'business' ? 'ffffff' : themeOpts.color
+            }, { bold: true });
+
+            return new docx.TableCell({
+              children: [new docx.Paragraph({ children: cellRuns, spacing: { before: 100, after: 100 } })],
+              shading: themeKey === 'business' ? { fill: '1e3a8a' } :
+                       themeKey === 'technical' ? { fill: 'f1f5f9' } : undefined,
+              borders: themeKey === 'academic' ? {
+                top: { style: docx.BorderStyle.SINGLE, size: 12, color: '000000' },
+                bottom: { style: docx.BorderStyle.SINGLE, size: 8, color: '000000' },
+                left: { style: docx.BorderStyle.NONE }, right: { style: docx.BorderStyle.NONE }
+              } : {
+                top: { style: docx.BorderStyle.SINGLE, size: 4, color: 'cbd5e1' },
+                bottom: { style: docx.BorderStyle.SINGLE, size: 4, color: 'cbd5e1' },
+                left: { style: docx.BorderStyle.SINGLE, size: 4, color: 'cbd5e1' },
+                right: { style: docx.BorderStyle.SINGLE, size: 4, color: 'cbd5e1' }
+              }
+            });
+          });
+
+          const tableRows = [
+            new docx.TableRow({ children: headerRowCells })
+          ];
+
+          token.rows.forEach((row, rowIdx) => {
+            const tableRowCells = row.map(cell => {
+              const cellRuns = processInlineTokensToNative(cell.tokens, themeOpts);
+              const isEvenRow = rowIdx % 2 === 1;
+              const rowFill = (themeKey === 'business' && isEvenRow) ? { fill: 'f8fafc' } : undefined;
+
+              return new docx.TableCell({
+                children: [new docx.Paragraph({ children: cellRuns, spacing: { before: 80, after: 80 } })],
+                shading: rowFill,
+                borders: themeKey === 'academic' ? {
+                  top: { style: docx.BorderStyle.NONE },
+                  bottom: rowIdx === token.rows.length - 1 
+                    ? { style: docx.BorderStyle.SINGLE, size: 12, color: '000000' }
+                    : { style: docx.BorderStyle.NONE },
+                  left: { style: docx.BorderStyle.NONE }, right: { style: docx.BorderStyle.NONE }
+                } : {
+                  top: { style: docx.BorderStyle.SINGLE, size: 4, color: 'cbd5e1' },
+                  bottom: { style: docx.BorderStyle.SINGLE, size: 4, color: 'cbd5e1' },
+                  left: { style: docx.BorderStyle.SINGLE, size: 4, color: 'cbd5e1' },
+                  right: { style: docx.BorderStyle.SINGLE, size: 4, color: 'cbd5e1' }
+                }
+              });
+            });
+
+            tableRows.push(new docx.TableRow({ children: tableRowCells }));
+          });
+
+          docChildren.push(new docx.Table({
+            rows: tableRows,
+            width: {
+              size: 100,
+              type: docx.WidthType.PERCENTAGE
+            },
+            spacing: { before: 240, after: 240 }
+          }));
+        }
+      }
+
+      // Read margin selections
+      const marginPreset = document.getElementById('margin-select').value;
+      const margins = MARGIN_PRESETS[marginPreset] || MARGIN_PRESETS.normal;
+      const paperSizeKey = document.getElementById('papersize-select').value;
+      const paperConfig = PAPER_SIZES[paperSizeKey]?.[currentOrientation] || PAPER_SIZES.A4.portrait;
+
+      // Pack true standard native WordprocessingML
+      const nativeDocument = new docx.Document({
+        creator: document.getElementById('doc-creator').value || '系統管理員',
+        title: documentTitle || '專業報告',
+        sections: [{
+          properties: {
+            page: {
+              size: {
+                width: paperConfig.width,
+                height: paperConfig.height,
+                orientation: currentOrientation === 'portrait' ? docx.PageOrientation.PORTRAIT : docx.PageOrientation.LANDSCAPE
+              },
+              margin: {
+                top: margins.top,
+                bottom: margins.bottom,
+                left: margins.left,
+                right: margins.right
+              }
+            }
+          },
+          children: docChildren
+        }]
+      });
+
+      return nativeDocument;
+    }
+
+    // Export single Word document (.docx) to client-side Standard formatting
     async function exportToDocx() {
       try {
+        if (typeof window.docx === 'undefined') {
+          showNotification('error', 'docx 編譯引擎尚未完全載入，請稍候重試。');
+          return;
+        }
+
         const mdText = document.getElementById('markdown-input').value;
         if (!mdText.trim()) {
           showNotification('error', '編輯器內容為空，無法匯出！');
           return;
         }
 
-        const themeKey = document.getElementById('theme-select').value;
-        const options = {
-          fontFamily: document.getElementById('font-select').value,
-          fontSize: document.getElementById('fontsize-select').value,
-          lineHeight: document.getElementById('lineheight-select').value,
-          underlineLinks: true
-        };
+        const documentTitle = document.getElementById('doc-title').value || '專業文件';
+        showNotification('success', '正在編譯 Native OpenXML 文件二進位檔...');
 
-        // 對應微軟官方 Word 可正確識別的 CJK 與英文字型名稱
-        let fontStack = options.fontFamily;
-        if (fontStack.includes('JhengHei') || fontStack.includes('正黑體')) {
-          fontStack = '"微軟正黑體", "Microsoft JhengHei", sans-serif';
-        } else if (fontStack.includes('Kai') || fontStack.includes('標楷體')) {
-          fontStack = '"標楷體", "DFKai-SB", "BiauKai", serif';
-        } else if (fontStack.includes('PMing') || fontStack.includes('新細明體')) {
-          fontStack = '"新細明體", "PMingLiU", serif';
-        } else {
-          fontStack = `"${fontStack}", serif`;
-        }
+        const compiledDoc = await compileMarkdownToNativeDocument(mdText, documentTitle);
+        const docxBlob = await docx.Packer.toBlob(compiledDoc);
 
-        // 產生套用自訂樣式設定後的原始 CSS 樣式
-        const themeCSS = generateCustomCSS(themeKey, options);
-        
-        // 清除 scoped 類別，還原成乾淨的全局標籤規則
-        let cleanExportCSS = themeCSS
-          .replace(/\.docx-preview\s+/g, '') // 清除子元素樣式的父層範圍
-          .replace(/\.docx-preview/g, 'body') // 將主範圍對應到 body 上
-          .replace(/\.dark\s+/g, ''); // 移除暗色模式
-
-        // 深度附加 Word 專屬覆寫規則：確保所有文字載體都強制套用選取的字型與規格
-        cleanExportCSS += `
-          body, div, p, span, h1, h2, h3, h4, h5, h6, table, tr, th, td, ul, ol, li, a, blockquote {
-            font-family: ${fontStack} !important;
-          }
-          body, div, p, span, td, li {
-            font-size: ${options.fontSize}pt !important;
-            line-height: ${options.lineHeight} !important;
-          }
-          p, li {
-            margin-top: 0in;
-            margin-bottom: 6pt;
-          }
-        `;
-
-        // 取得邊距設定值（以 twips 單位表示）
-        const marginPreset = document.getElementById('margin-select').value;
-        const margins = MARGIN_PRESETS[marginPreset] || MARGIN_PRESETS.normal;
-
-        // 取得紙張大小與 Word MHTML 專用物理 cm 大小
-        const paperSizeKey = document.getElementById('papersize-select').value;
-        const paperConfig = PAPER_SIZES[paperSizeKey]?.[currentOrientation] || PAPER_SIZES.A4.portrait;
-        const wordSizeDimensions = WORD_PAGE_SIZES[paperSizeKey]?.[currentOrientation] || WORD_PAGE_SIZES.A4.portrait;
-
-        // Clean slate compile for DOCX export from raw markdown to exclude preview helper elements
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = marked.parse(mdText);
-        let compiledContent = tempDiv.innerHTML;
-
-        // 構建精美且相容於微軟 Office HTML/MHTML 渲染的 Section 頁面配置
-        const fullHtml = `
-          <!DOCTYPE html>
-          <html>
-          <head>
-            <meta charset="utf-8">
-            <style>
-              ${cleanExportCSS}
-              @page WordSection1 {
-                size: ${wordSizeDimensions.width} ${wordSizeDimensions.height};
-                margin: ${margins.top / 1440}in ${margins.right / 1440}in ${margins.bottom / 1440}in ${margins.left / 1440}in;
-              }
-              div.WordSection1 {
-                page: WordSection1;
-              }
-            </style>
-          </head>
-          <body>
-            <div class="WordSection1">
-              ${compiledContent}
-            </div>
-          </body>
-          </html>
-        `;
-
-        // 進行基礎轉換（產生標準壓縮包結構）
-        const converted = htmlDocx.asBlob(fullHtml, {
-          orientation: currentOrientation,
-          margins: {
-            top: margins.top,
-            bottom: margins.bottom,
-            left: margins.left,
-            right: margins.right
-          }
-        });
-
-        // --- 🚀 關鍵修正：使用 JSZip 直解解包優化並強行覆寫 A3/A4 物理配置 ---
-        showNotification('success', '正在優化文件結構與紙張排版...');
-        const zip = await JSZip.loadAsync(converted);
-        let docXml = await zip.file("word/document.xml").async("string");
-
-        // 替換紙張規格 pgSz (寬 w, 高 h,  방향 orient)
-        const pgSzRegex = /<w:pgSz[^>]*\/>/g;
-        const patchedPgSz = `<w:pgSz w:w="${paperConfig.width}" w:h="${paperConfig.height}" w:orient="${currentOrientation}"/>`;
-        docXml = docXml.replace(pgSzRegex, patchedPgSz);
-
-        // 替換頁面邊距 pgMar
-        const pgMarRegex = /<w:pgMar[^>]*\/>/g;
-        const patchedPgMar = `<w:pgMar w:top="${margins.top}" w:right="${margins.right}" w:bottom="${margins.bottom}" w:left="${margins.left}" w:header="720" w:footer="720" w:gutter="0"/>`;
-        docXml = docXml.replace(pgMarRegex, patchedPgMar);
-
-        // 將替換完畢的 XML 寫回結構
-        zip.file("word/document.xml", docXml);
-
-        // 重新封裝成全新 DOCX Blob 二進位檔
-        const patchedBlob = await zip.generateAsync({ type: "blob" });
-
-        // 命名並儲存檔案
-        const filename = (document.getElementById('doc-title').value || '專業文件') + '.docx';
-        saveAs(patchedBlob, filename);
-        showNotification('success', `成功匯出 "${filename}" (${paperSizeKey}規格 / ${currentOrientation === 'portrait' ? '直向' : '橫向'})！`);
+        const filename = `${documentTitle}.docx`;
+        saveAs(docxBlob, filename);
+        showNotification('success', `成功匯出標準標準 DOCX 格式: "${filename}"！`);
       } catch (err) {
         console.error(err);
         showNotification('error', '匯出時發生錯誤: ' + err.message);
@@ -2037,7 +2334,7 @@ saveAs(blob, 'my_document.docx');
     }
   </script>
 
-  <!-- Batch Processing Core Engine JavaScript (NEW) -->
+  <!-- Batch Processing Core Engine JavaScript -->
   <script>
     // Triggered when file input in batch tab is populated
     function uploadBatchFiles(input) {
@@ -2051,7 +2348,7 @@ saveAs(blob, 'my_document.docx');
       const filesArray = Array.from(files);
       let newlyLoaded = 0;
 
-      showNotification('success', `開始載入 ${filesArray.length} 個檔案至佇列...`);
+      showNotification('success', `開始載入 ${filesArray.length} 個檔案至待編譯佇列...`);
 
       for (const file of filesArray) {
         const ext = file.name.split('.').pop().toLowerCase();
@@ -2076,7 +2373,7 @@ saveAs(blob, 'my_document.docx');
             content: content,
             size: file.size,
             wordCount: words,
-            status: 'ready' // 'ready', 'converting', 'done', 'error'
+            status: 'ready' 
           });
           newlyLoaded++;
         } catch (fileErr) {
@@ -2123,7 +2420,6 @@ saveAs(blob, 'my_document.docx');
       const countLabel = document.getElementById('batch-count');
       const startBtn = document.getElementById('batch-export-btn');
       
-      // Initialize list container view
       container.innerHTML = '';
       countLabel.textContent = batchQueue.length;
 
@@ -2134,13 +2430,11 @@ saveAs(blob, 'my_document.docx');
             <p class="text-xs">目前無上傳檔案，請拖曳檔案進來開始批次轉換工作</p>
           </div>
         `;
-        // Disable action button
         startBtn.disabled = true;
         startBtn.className = "w-full md:w-auto bg-slate-400 text-white cursor-not-allowed px-6 py-3 rounded-xl font-bold shadow-md transition flex items-center justify-center gap-2 text-sm";
         return;
       }
 
-      // Enable action button with gradient
       startBtn.disabled = false;
       startBtn.className = "w-full md:w-auto bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 py-3 rounded-xl font-bold shadow-md hover:shadow-lg active:scale-95 transition flex items-center justify-center gap-2 text-sm cursor-pointer";
 
@@ -2186,8 +2480,13 @@ saveAs(blob, 'my_document.docx');
       });
     }
 
-    // Execute batch conversion logic
+    // Execute batch conversion logic with master native Word generator
     async function exportBatchToDocx() {
+      if (typeof window.docx === 'undefined') {
+        showNotification('error', 'docx 編譯引擎尚未完全載入，無法批次匯出！');
+        return;
+      }
+
       if (batchQueue.length === 0) {
         showNotification('error', '佇列中沒有可轉換的檔案！');
         return;
@@ -2198,57 +2497,8 @@ saveAs(blob, 'my_document.docx');
       startBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin mr-1"></i> 正在編譯打包中...`;
 
       try {
-        const themeKey = document.getElementById('theme-select').value;
-        const options = {
-          fontFamily: document.getElementById('font-select').value,
-          fontSize: document.getElementById('fontsize-select').value,
-          lineHeight: document.getElementById('lineheight-select').value,
-          underlineLinks: true
-        };
-
-        // Align font selection stack
-        let fontStack = options.fontFamily;
-        if (fontStack.includes('JhengHei') || fontStack.includes('正黑體')) {
-          fontStack = '"微軟正黑體", "Microsoft JhengHei", sans-serif';
-        } else if (fontStack.includes('Kai') || fontStack.includes('標楷體')) {
-          fontStack = '"標楷體", "DFKai-SB", "BiauKai", serif';
-        } else if (fontStack.includes('PMing') || fontStack.includes('新細明體')) {
-          fontStack = '"新細明體", "PMingLiU", serif';
-        } else {
-          fontStack = `"${fontStack}", serif`;
-        }
-
-        // Output configuration values
-        const themeCSS = generateCustomCSS(themeKey, options);
-        let cleanExportCSS = themeCSS
-          .replace(/\.docx-preview\s+/g, '') 
-          .replace(/\.docx-preview/g, 'body') 
-          .replace(/\.dark\s+/g, '');
-
-        cleanExportCSS += `
-          body, div, p, span, h1, h2, h3, h4, h5, h6, table, tr, th, td, ul, ol, li, a, blockquote {
-            font-family: ${fontStack} !important;
-          }
-          body, div, p, span, td, li {
-            font-size: ${options.fontSize}pt !important;
-            line-height: ${options.lineHeight} !important;
-          }
-          p, li {
-            margin-top: 0in;
-            margin-bottom: 6pt;
-          }
-        `;
-
-        const marginPreset = document.getElementById('margin-select').value;
-        const margins = MARGIN_PRESETS[marginPreset] || MARGIN_PRESETS.normal;
-        const paperSizeKey = document.getElementById('papersize-select').value;
-        const paperConfig = PAPER_SIZES[paperSizeKey]?.[currentOrientation] || PAPER_SIZES.A4.portrait;
-        const wordSizeDimensions = WORD_PAGE_SIZES[paperSizeKey]?.[currentOrientation] || WORD_PAGE_SIZES.A4.portrait;
-
-        // Initialize Master JSZip container for the batch output ZIP download
         const masterZip = new JSZip();
-
-        showNotification('success', `批次處理開始！正在編譯 ${batchQueue.length} 個檔案...`);
+        showNotification('success', `批次處理開始！正在以 Native 規格編譯 ${batchQueue.length} 個檔案...`);
 
         for (let i = 0; i < batchQueue.length; i++) {
           const fileItem = batchQueue[i];
@@ -2271,70 +2521,15 @@ saveAs(blob, 'my_document.docx');
               }
             }
             if (!docTitle) {
-              docTitle = fileItem.name.substring(0, fileItem.name.lastIndexOf('.')) || '文件_' + (i + 1);
+              docTitle = fileItem.name.substring(0, fileItem.name.lastIndexOf('.')) || '未命名文件_' + (i + 1);
             }
 
-            // Parse Markdown string
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = marked.parse(fileItem.content);
-            const compiledContent = tempDiv.innerHTML;
+            // Standard Compilation
+            const compiledDocument = await compileMarkdownToNativeDocument(fileItem.content, docTitle);
+            const docxBlob = await docx.Packer.toBlob(compiledDocument);
 
-            // Generate HTML package
-            const fullHtml = `
-              <!DOCTYPE html>
-              <html>
-              <head>
-                <meta charset="utf-8">
-                <style>
-                  ${cleanExportCSS}
-                  @page WordSection1 {
-                    size: ${wordSizeDimensions.width} ${wordSizeDimensions.height};
-                    margin: ${margins.top / 1440}in ${margins.right / 1440}in ${margins.bottom / 1440}in ${margins.left / 1440}in;
-                  }
-                  div.WordSection1 {
-                    page: WordSection1;
-                  }
-                </style>
-              </head>
-              <body>
-                <div class="WordSection1">
-                  ${compiledContent}
-                </div>
-              </body>
-              </html>
-            `;
-
-            // Convert to base DOCX Blob via html-docx-js
-            const converted = htmlDocx.asBlob(fullHtml, {
-              orientation: currentOrientation,
-              margins: {
-                top: margins.top,
-                bottom: margins.bottom,
-                left: margins.left,
-                right: margins.right
-              }
-            });
-
-            // Patch package variables using JSZip dynamically for custom layouts (A3/A4 & margins)
-            const docZip = await JSZip.loadAsync(converted);
-            let docXml = await docZip.file("word/document.xml").async("string");
-
-            // Patch pgSz
-            const pgSzRegex = /<w:pgSz[^>]*\/>/g;
-            const patchedPgSz = `<w:pgSz w:w="${paperConfig.width}" w:h="${paperConfig.height}" w:orient="${currentOrientation}"/>`;
-            docXml = docXml.replace(pgSzRegex, patchedPgSz);
-
-            // Patch pgMar
-            const pgMarRegex = /<w:pgMar[^>]*\/>/g;
-            const patchedPgMar = `<w:pgMar w:top="${margins.top}" w:right="${margins.right}" w:bottom="${margins.bottom}" w:left="${margins.left}" w:header="720" w:footer="720" w:gutter="0"/>`;
-            docXml = docXml.replace(pgMarRegex, patchedPgMar);
-
-            // Re-write back and repack
-            docZip.file("word/document.xml", docXml);
-            const patchedBlob = await docZip.generateAsync({ type: "blob" });
-
-            // Feed patched individual docx file directly into master ZIP container
-            masterZip.file(`${docTitle}.docx`, patchedBlob);
+            // Append docx binary file inside ZIP structure
+            masterZip.file(`${docTitle}.docx`, docxBlob);
             fileItem.status = 'done';
           } catch (fileErr) {
             console.error(fileErr);
@@ -2344,15 +2539,15 @@ saveAs(blob, 'my_document.docx');
           renderBatchQueue();
         }
 
-        showNotification('success', `所有檔案編譯完成，正在打包並壓縮 ZIP 檔案...`);
+        showNotification('success', `所有檔案編譯完成，正在打包成 ZIP 檔案...`);
 
         // Generate master ZIP Blob
         const zipBlob = await masterZip.generateAsync({ type: "blob" });
         const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-        const zipName = `批次排版匯出_${dateStr}.zip`;
+        const zipName = `標準排版批次匯出_${dateStr}.zip`;
 
         saveAs(zipBlob, zipName);
-        showNotification('success', `成功匯出 ZIP 壓縮包: ${zipName}`);
+        showNotification('success', `成功下載標準 DOCX ZIP 壓縮包: ${zipName}`);
       } catch (err) {
         console.error(err);
         showNotification('error', `批次轉換時發生錯誤: ` + err.message);
