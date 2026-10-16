@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>DOCX HTML 实体回归测试</title>
+</head>
+<body>
+  <h1>DOCX HTML 实体回归测试</h1>
+  <pre id="results">正在加载转换器…</pre>
+  <iframe id="converter" src="../index.html" hidden></iframe>
+  <script>
+    const cases = [
+      ['发布路径', '/F9Web/Release/&lt;项目&gt;；/F9Api/Release/&lt;项目&gt;', '/F9Web/Release/<项目>；/F9Api/Release/<项目>'],
+      ['原始尖括号', '/F9Web/Release/<项目>', '/F9Web/Release/<项目>'],
+      ['标题', '# &lt;项目&gt;', '<项目>'],
+      ['粗体和斜体', '**&lt;项目&gt;** *&amp;*', '<项目> &'],
+      ['链接文字', '[&lt;项目&gt;](https://example.com)', '<项目>'],
+      ['引用', '> &lt;项目&gt;', '<项目>'],
+      ['列表', '- &lt;项目&gt;', '•  <项目>'],
+      ['表格', '| 路径 |\n| --- |\n| /F9Api/Release/&lt;项目&gt; |', '路径/F9Api/Release/<项目>'],
+      ['十进制实体', '&#60;项目&#62;', '<项目>'],
+      ['十六进制实体', '&#x3C;项目&#x3E;', '<项目>'],
+      ['其他实体', '&amp; &quot; &apos; &copy;', '& " \' ©'],
+      ['只解码一次', '&amp;lt;项目&amp;gt;', '&lt;项目&gt;'],
+      ['转义标签保持文字', '&lt;img src=x onerror=alert(1)&gt;', '<img src=x onerror=alert(1)>'],
+      ['行内代码保持原样', '`/F9Web/Release/&lt;项目&gt;`', '/F9Web/Release/&lt;项目&gt;'],
+      ['代码块保持原样', '```text\n/F9Api/Release/&lt;项目&gt;\n```', '/F9Api/Release/&lt;项目&gt;'],
+    ];
+
+    document.getElementById('converter').addEventListener('load', async function() {
+      const app = this.contentWindow;
+      const results = document.getElementById('results');
+      const lines = [];
+      let failures = 0;
+
+      try {
+        for (const [name, markdown, expected] of cases) {
+          const doc = await app.compileMarkdownToNativeDocument(markdown, name);
+          const blob = await app.docx.Packer.toBlob(doc);
+          const zip = await app.JSZip.loadAsync(blob);
+          const xml = await zip.file('word/document.xml').async('string');
+          const parsed = new DOMParser().parseFromString(xml, 'application/xml');
+          const actual = Array.from(parsed.getElementsByTagNameNS(
+            'http://schemas.openxmlformats.org/wordprocessingml/2006/main', 't'
+          ), node => node.textContent).join('');
+
+          if (actual === expected) {
+            lines.push('PASS ' + name);
+          } else {
+            failures++;
+            lines.push('FAIL ' + name + '\n  expected: ' + JSON.stringify(expected) + '\n  actual:   ' + JSON.stringify(actual));
+          }
+        }
+        lines.push('\n' + (cases.length - failures) + '/' + cases.length + ' 通过');
+      } catch (error) {
+        failures++;
+        lines.push('ERROR ' + error.stack);
+      }
+
+      results.textContent = lines.join('\n');
+      document.title = (failures ? 'FAIL' : 'PASS') + ' DOCX HTML 实体回归测试';
+    });
+  </script>
+</body>
+</html>

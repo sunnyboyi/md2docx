@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>DOCX 表格间距回归测试</title>
+</head>
+<body>
+  <h1>DOCX 表格间距回归测试</h1>
+  <pre id="results">正在加载转换器…</pre>
+  <iframe id="converter" src="../index.html" hidden></iframe>
+  <script>
+    document.getElementById('converter').addEventListener('load', async function() {
+      const app = this.contentWindow;
+      const results = document.getElementById('results');
+      const ns = 'http://schemas.openxmlformats.org/wordprocessingml/2006/main';
+      const markdown = '| 产品 | 发布路径 |\n| --- | --- |\n| ALL | /F9Web/Release/&lt;项目&gt; |\n| SEA | /F9Api/Release/&lt;项目&gt; |';
+      const lines = [];
+      let failures = 0;
+
+      try {
+        app.document.getElementById('markdown-input').value = markdown + '\n\n' + markdown;
+        for (const theme of ['business', 'academic', 'technical', 'classic']) {
+          app.document.getElementById('theme-select').value = theme;
+          app.onLayoutConfigChange();
+          const previewCells = Array.from(app.document.querySelectorAll('#preview-content th, #preview-content td'));
+          const doc = await app.compileMarkdownToNativeDocument(markdown + '\n\n' + markdown, theme);
+          const blob = await app.docx.Packer.toBlob(doc);
+          const zip = await app.JSZip.loadAsync(blob);
+          const xml = await zip.file('word/document.xml').async('string');
+          const parsed = new DOMParser().parseFromString(xml, 'application/xml');
+          const cells = Array.from(parsed.getElementsByTagNameNS(ns, 'tc'));
+          const errors = [];
+
+          if (cells.length !== 12 || cells.length !== previewCells.length) {
+            errors.push('预览与导出单元格数量不符');
+          } else {
+            cells.forEach((cell, index) => {
+              const style = app.getComputedStyle(previewCells[index]);
+              const margins = cell.getElementsByTagNameNS(ns, 'tcMar')[0];
+              for (const side of ['left', 'right']) {
+                const expected = Math.round(parseFloat(style.getPropertyValue('padding-' + side)) * 15);
+                const margin = margins?.getElementsByTagNameNS(ns, side)[0];
+                const actual = margin?.getAttributeNS(ns, 'w');
+                if (!expected || Number(actual) !== expected) {
+                  errors.push('单元格 ' + (index + 1) + ' ' + side + ': expected ' + expected + ' twips, actual ' + actual);
+                }
+              }
+            });
+          }
+
+          if (errors.length) failures++;
+          lines.push((errors.length ? 'FAIL ' : 'PASS ') + theme + (errors.length ? '\n  ' + errors.join('\n  ') : '：表头、正文及多表格的左右内边距与预览一致'));
+        }
+        lines.push('\n' + (4 - failures) + '/4 通过');
+      } catch (error) {
+        failures++;
+        lines.push('ERROR ' + error.stack);
+      }
+
+      results.textContent = lines.join('\n');
+      document.title = (failures ? 'FAIL' : 'PASS') + ' DOCX 表格间距回归测试';
+    });
+  </script>
+</body>
+</html>

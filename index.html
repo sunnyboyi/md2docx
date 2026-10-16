@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="zh-TW" class="h-full">
+<html lang="zh-CN" class="h-full">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Markdown 轉 Word (DOCX) 專業排版工具</title>
+  <title>Markdown 转 Word (DOCX) 专业排版工具</title>
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts - Inter & Noto Sans TC -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <!-- Google Fonts - Inter & Noto Sans SC -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- Marked.js for Markdown parsing -->
@@ -27,7 +27,7 @@
       theme: {
         extend: {
           fontFamily: {
-            sans: ['Inter', 'Noto Sans TC', 'sans-serif'],
+            sans: ['Inter', 'Noto Sans SC', 'sans-serif'],
           }
         }
       }
@@ -101,29 +101,29 @@
       </div>
       <div>
         <h1 class="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
-          Markdown 轉 Word (DOCX) 專業排版工具
+          Markdown 转 Word (DOCX) 专业排版工具
         </h1>
-        <p class="text-xs text-slate-500 dark:text-slate-400">本地編譯無上傳 • 100% Native OOXML 標準格式 • 支援多檔打包 ZIP 下載</p>
+        <p class="text-xs text-slate-500 dark:text-slate-400">本地编译无上传 • 100% Native OOXML 标准格式 • 支持多文件打包 ZIP 下载</p>
       </div>
     </div>
 
     <!-- Right Header Controls -->
     <div class="flex items-center gap-3">
       <!-- Dark/Light Mode Toggle -->
-      <button onclick="toggleDarkMode()" class="p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 transition" title="切換深淺模式">
+      <button onclick="toggleDarkMode()" class="p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 transition" title="切换深浅模式">
         <i id="theme-icon" class="fa-regular fa-moon text-lg text-slate-600 dark:text-slate-300"></i>
       </button>
 
       <!-- Preview Toggle Button -->
-      <button onclick="openPreviewModal()" class="border border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/40 px-5 py-2.5 rounded-lg font-medium shadow-sm transition flex items-center gap-2" title="開啟全畫面預覽">
+      <button onclick="openPreviewModal()" class="border border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/40 px-5 py-2.5 rounded-lg font-medium shadow-sm transition flex items-center gap-2" title="开启全屏预览">
         <i class="fa-regular fa-eye text-lg"></i>
-        <span>即時預覽</span>
+        <span>实时预览</span>
       </button>
 
       <!-- Main Export Button -->
       <button id="export-btn" onclick="exportToDocx()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-5 py-2.5 rounded-lg font-medium shadow-md hover:shadow-lg active:scale-95 transition flex items-center gap-2">
         <i class="fa-regular fa-circle-down"></i>
-        <span>下載 DOCX 檔案</span>
+        <span>下载 DOCX 文件</span>
       </button>
     </div>
   </header>
@@ -140,16 +140,16 @@
       <!-- Tabs Selector -->
       <div class="flex border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 flex-shrink-0">
         <button onclick="switchTab('editor-tab')" id="tab-btn-editor-tab" class="flex-1 py-3 px-4 font-semibold text-sm border-b-2 border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400 flex items-center justify-center gap-2 transition hover:bg-slate-100/50 dark:hover:bg-slate-800/50">
-          <i class="fa-regular fa-pen-to-square"></i> 內容編輯器
+          <i class="fa-regular fa-pen-to-square"></i> 内容编辑器
         </button>
         <button onclick="switchTab('batch-tab')" id="tab-btn-batch-tab" class="flex-1 py-3 px-4 font-semibold text-sm border-b-2 border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 transition hover:bg-slate-100/50 dark:hover:bg-slate-800/50">
-          <i class="fa-solid fa-cubes"></i> 批次轉換工具
+          <i class="fa-solid fa-cubes"></i> 批量转换工具
         </button>
         <button onclick="switchTab('style-tab')" id="tab-btn-style-tab" class="flex-1 py-3 px-4 font-semibold text-sm border-b-2 border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 transition hover:bg-slate-100/50 dark:hover:bg-slate-800/50">
-          <i class="fa-solid fa-sliders"></i> 排版與輸出設定
+          <i class="fa-solid fa-sliders"></i> 排版与输出设置
         </button>
         <button onclick="switchTab('templates-tab')" id="tab-btn-templates-tab" class="flex-1 py-3 px-4 font-semibold text-sm border-b-2 border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center gap-2 transition hover:bg-slate-100/50 dark:hover:bg-slate-800/50">
-          <i class="fa-regular fa-paste"></i> 文件範本庫
+          <i class="fa-regular fa-paste"></i> 文件模板库
         </button>
       </div>
 
@@ -163,33 +163,33 @@
           <div class="flex flex-col gap-3">
             <!-- Toolbar buttons -->
             <div id="editor-toolbar" class="flex flex-wrap items-center gap-1.5 p-1 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg">
-              <button onclick="insertMarkdown('# ')" class="p-1.5 w-9 h-9 flex items-center justify-center rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition font-bold" title="一級標題">H1</button>
-              <button onclick="insertMarkdown('## ')" class="p-1.5 w-9 h-9 flex items-center justify-center rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition font-bold" title="二級標題">H2</button>
-              <button onclick="insertMarkdown('### ')" class="p-1.5 w-9 h-9 flex items-center justify-center rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition font-bold" title="三級標題">H3</button>
+              <button onclick="insertMarkdown('# ')" class="p-1.5 w-9 h-9 flex items-center justify-center rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition font-bold" title="一级标题">H1</button>
+              <button onclick="insertMarkdown('## ')" class="p-1.5 w-9 h-9 flex items-center justify-center rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition font-bold" title="二级标题">H2</button>
+              <button onclick="insertMarkdown('### ')" class="p-1.5 w-9 h-9 flex items-center justify-center rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition font-bold" title="三级标题">H3</button>
               <div class="w-px h-6 bg-slate-200 dark:bg-slate-700 mx-1"></div>
               
-              <button onclick="insertMarkdown('**', '**')" class="p-1.5 w-9 h-9 flex items-center justify-center rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition" title="粗體"><i class="fa-solid fa-bold"></i></button>
-              <button onclick="insertMarkdown('*', '*')" class="p-1.5 w-9 h-9 flex items-center justify-center rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition" title="斜體"><i class="fa-solid fa-italic"></i></button>
-              <button onclick="insertMarkdown('~~', '~~')" class="p-1.5 w-9 h-9 flex items-center justify-center rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition" title="刪除線"><i class="fa-solid fa-strikethrough"></i></button>
+              <button onclick="insertMarkdown('**', '**')" class="p-1.5 w-9 h-9 flex items-center justify-center rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition" title="粗体"><i class="fa-solid fa-bold"></i></button>
+              <button onclick="insertMarkdown('*', '*')" class="p-1.5 w-9 h-9 flex items-center justify-center rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition" title="斜体"><i class="fa-solid fa-italic"></i></button>
+              <button onclick="insertMarkdown('~~', '~~')" class="p-1.5 w-9 h-9 flex items-center justify-center rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition" title="删除线"><i class="fa-solid fa-strikethrough"></i></button>
               <div class="w-px h-6 bg-slate-200 dark:bg-slate-700 mx-1"></div>
               
-              <button onclick="insertMarkdown('- ')" class="p-1.5 w-9 h-9 flex items-center justify-center rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition" title="無序清單"><i class="fa-solid fa-list-ul"></i></button>
-              <button onclick="insertMarkdown('1. ')" class="p-1.5 w-9 h-9 flex items-center justify-center rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition" title="有序清單"><i class="fa-solid fa-list-ol"></i></button>
-              <button onclick="insertMarkdown('- [ ] ')" class="p-1.5 w-9 h-9 flex items-center justify-center rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition" title="代辦清單"><i class="fa-regular fa-square-check"></i></button>
+              <button onclick="insertMarkdown('- ')" class="p-1.5 w-9 h-9 flex items-center justify-center rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition" title="无序列表"><i class="fa-solid fa-list-ul"></i></button>
+              <button onclick="insertMarkdown('1. ')" class="p-1.5 w-9 h-9 flex items-center justify-center rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition" title="有序列表"><i class="fa-solid fa-list-ol"></i></button>
+              <button onclick="insertMarkdown('- [ ] ')" class="p-1.5 w-9 h-9 flex items-center justify-center rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition" title="待办列表"><i class="fa-regular fa-square-check"></i></button>
               <div class="w-px h-6 bg-slate-200 dark:bg-slate-700 mx-1"></div>
               
-              <button onclick="insertMarkdown('> ')" class="p-1.5 w-9 h-9 flex items-center justify-center rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition" title="引用區塊"><i class="fa-solid fa-quote-left"></i></button>
+              <button onclick="insertMarkdown('> ')" class="p-1.5 w-9 h-9 flex items-center justify-center rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition" title="引用区块"><i class="fa-solid fa-quote-left"></i></button>
               <button onclick="insertTableTemplate()" class="p-1.5 w-9 h-9 flex items-center justify-center rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition" title="表格"><i class="fa-solid fa-table"></i></button>
-              <button onclick="insertMarkdown('`', '`')" class="p-1.5 w-9 h-9 flex items-center justify-center rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition" title="行內程式碼"><i class="fa-solid fa-code"></i></button>
-              <button onclick="insertMarkdown('\n\`\`\`javascript\n', '\n\`\`\`\n')" class="p-1.5 w-9 h-9 flex items-center justify-center rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition" title="程式碼區塊"><i class="fa-solid fa-terminal"></i></button>
+              <button onclick="insertMarkdown('`', '`')" class="p-1.5 w-9 h-9 flex items-center justify-center rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition" title="行内代码"><i class="fa-solid fa-code"></i></button>
+              <button onclick="insertMarkdown('\n\`\`\`javascript\n', '\n\`\`\`\n')" class="p-1.5 w-9 h-9 flex items-center justify-center rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition" title="代码区块"><i class="fa-solid fa-terminal"></i></button>
               <div class="w-px h-6 bg-slate-200 dark:bg-slate-700 mx-1"></div>
 
-              <button onclick="insertMarkdown('![描述](', ')')" class="p-1.5 w-9 h-9 flex items-center justify-center rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition" title="圖片連結"><i class="fa-regular fa-image"></i></button>
-              <button onclick="insertMarkdown('\n---\n')" class="p-1.5 w-9 h-9 flex items-center justify-center rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition" title="水平分割線"><i class="fa-solid fa-minus"></i></button>
+              <button onclick="insertMarkdown('![描述](', ')')" class="p-1.5 w-9 h-9 flex items-center justify-center rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition" title="图片链接"><i class="fa-regular fa-image"></i></button>
+              <button onclick="insertMarkdown('\n---\n')" class="p-1.5 w-9 h-9 flex items-center justify-center rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition" title="水平分割线"><i class="fa-solid fa-minus"></i></button>
               
               <div class="flex-grow"></div>
               
-              <button onclick="clearEditor()" class="p-1.5 h-9 px-2.5 flex items-center justify-center gap-1.5 text-xs text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 rounded transition" title="清除所有內容">
+              <button onclick="clearEditor()" class="p-1.5 h-9 px-2.5 flex items-center justify-center gap-1.5 text-xs text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 rounded transition" title="清除所有内容">
                 <i class="fa-regular fa-trash-can"></i> <span>清除</span>
               </button>
             </div>
@@ -202,10 +202,10 @@
                   <i class="fa-solid fa-cloud-arrow-up text-xl"></i>
                 </div>
                 <p class="text-xs text-slate-600 dark:text-slate-300">
-                  <span class="font-medium text-blue-600 dark:text-blue-400 group-hover:underline">點擊上傳</span> 
-                  或將 Markdown 檔、圖片拖曳到此處
+                  <span class="font-medium text-blue-600 dark:text-blue-400 group-hover:underline">点击上传</span> 
+                  或将 Markdown 文件、图片拖拽到此处
                 </p>
-                <p class="text-[10px] text-slate-400">支援 .md / .markdown / .txt / 圖片拖曳自動轉 Base64</p>
+                <p class="text-[10px] text-slate-400">支持 .md / .markdown / .txt / 图片拖拽自动转 Base64</p>
               </div>
             </div>
           </div>
@@ -213,14 +213,14 @@
           <!-- Editor Mode Segmented Controller -->
           <div class="flex items-center justify-between px-1">
             <span class="text-xs font-semibold text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
-              <i class="fa-solid fa-code-branch text-blue-500"></i> 工作區模式
+              <i class="fa-solid fa-code-branch text-blue-500"></i> 工作区模式
             </span>
             <div class="flex bg-slate-100 dark:bg-slate-900 p-0.5 rounded-lg border border-slate-200 dark:border-slate-700">
               <button id="editor-mode-write" onclick="setEditorMode('write')" class="px-3 py-1 text-xs font-semibold rounded-md bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 shadow-sm flex items-center gap-1.5 transition">
-                <i class="fa-regular fa-keyboard text-[10px]"></i> 編輯原始碼
+                <i class="fa-regular fa-keyboard text-[10px]"></i> 编辑源码
               </button>
               <button id="editor-mode-preview" onclick="setEditorMode('preview')" class="px-3 py-1 text-xs font-semibold rounded-md text-slate-600 dark:text-slate-400 flex items-center gap-1.5 transition">
-                <i class="fa-regular fa-eye text-[10px]"></i> 預覽渲染效果
+                <i class="fa-regular fa-eye text-[10px]"></i> 预览渲染效果
               </button>
             </div>
           </div>
@@ -228,7 +228,7 @@
           <!-- Main Input Field -->
           <div class="flex-1 flex flex-col relative min-h-[300px]">
             <!-- Write mode textarea -->
-            <textarea id="markdown-input" oninput="onEditorInput()" class="w-full flex-1 p-4 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/30 dark:bg-slate-900/20 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm leading-relaxed resize-none dark:text-slate-200 shadow-inner" placeholder="請在此處輸入您的 Markdown 內容..."></textarea>
+            <textarea id="markdown-input" oninput="onEditorInput()" class="w-full flex-1 p-4 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/30 dark:bg-slate-900/20 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm leading-relaxed resize-none dark:text-slate-200 shadow-inner" placeholder="请在此处输入您的 Markdown 内容..."></textarea>
             
             <!-- Local editor preview mode -->
             <div id="editor-preview" class="hidden w-full flex-1 p-4 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-900/50 overflow-y-auto prose max-w-none dark:prose-invert" style="min-height: 300px;">
@@ -238,13 +238,13 @@
             <!-- Dynamic character counter footer -->
             <div class="flex items-center justify-between mt-2 px-1 text-xs text-slate-400">
               <div class="flex gap-4">
-                <span>字數: <strong id="char-count" class="text-slate-600 dark:text-slate-300">0</strong></span>
-                <span>詞數: <strong id="word-count" class="text-slate-600 dark:text-slate-300">0</strong></span>
-                <span>行數: <strong id="line-count" class="text-slate-600 dark:text-slate-300">0</strong></span>
+                <span>字数: <strong id="char-count" class="text-slate-600 dark:text-slate-300">0</strong></span>
+                <span>词数: <strong id="word-count" class="text-slate-600 dark:text-slate-300">0</strong></span>
+                <span>行数: <strong id="line-count" class="text-slate-600 dark:text-slate-300">0</strong></span>
               </div>
               <div class="flex items-center gap-1.5">
                 <i class="fa-solid fa-shield-halved text-emerald-500"></i>
-                <span>無網頁快取上傳，隱私受保護</span>
+                <span>无网页缓存上传，隐私受保护</span>
               </div>
             </div>
           </div>
@@ -256,10 +256,10 @@
           <div class="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900 rounded-xl p-4 flex gap-3 items-start">
             <i class="fa-solid fa-circle-info text-blue-500 mt-0.5 text-lg"></i>
             <div class="text-xs text-blue-800 dark:text-blue-300 leading-relaxed">
-              <p class="font-bold mb-1">💡 批次轉換說明：</p>
-              <p>1. 拖曳或選擇多個 Markdown (.md) 或文字檔 (.txt) 到下方虛線區塊。</p>
-              <p>2. 系統將使用您在<b>「排版與輸出設定」</b>分頁中所設定的主題與紙張大小進行編譯排版。</p>
-              <p>3. 轉換完成後，所有檔案將由瀏覽器直接編譯為<b>微軟標準 XML 二進位 (.docx) 檔</b>並打包 ZIP 下載。完全在您本機端執行，無資料外洩風險！</p>
+              <p class="font-bold mb-1">💡 批量转换说明：</p>
+              <p>1. 拖拽或选择多个 Markdown (.md) 或文本文件 (.txt) 到下方虚线区块。</p>
+              <p>2. 系统将使用您在<b>「排版与输出设置」</b>选项卡中所设置的主题与纸张大小进行编译排版。</p>
+              <p>3. 转换完成后，所有文件将由浏览器直接编译为<b>微软标准 XML 二进制 (.docx) 文件</b>并打包 ZIP 下载。完全在您本机端执行，无数据外泄风险！</p>
             </div>
           </div>
 
@@ -271,10 +271,10 @@
                 <i class="fa-solid fa-folder-open text-3xl"></i>
               </div>
               <p class="text-sm text-slate-600 dark:text-slate-300">
-                <span class="font-bold text-blue-600 dark:text-blue-400 group-hover:underline">點擊選擇多個檔案</span> 
-                或將多個 Markdown 檔拖曳到此處
+                <span class="font-bold text-blue-600 dark:text-blue-400 group-hover:underline">点击选择多个文件</span> 
+                或将多个 Markdown 文件拖拽到此处
               </p>
-              <p class="text-xs text-slate-400">支援同時選取多個 .md / .markdown / .txt 檔案</p>
+              <p class="text-xs text-slate-400">支持同时选取多个 .md / .markdown / .txt 文件</p>
             </div>
           </div>
 
@@ -283,10 +283,10 @@
             <!-- Queue Header -->
             <div class="px-4 py-3 bg-slate-100 dark:bg-slate-800/80 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center flex-shrink-0">
               <span class="text-xs font-bold text-slate-600 dark:text-slate-300 flex items-center gap-1.5">
-                <i class="fa-solid fa-list-check text-blue-500"></i> 待轉換佇列 (<span id="batch-count">0</span> 個檔案)
+                <i class="fa-solid fa-list-check text-blue-500"></i> 待转换队列 (<span id="batch-count">0</span> 个文件)
               </span>
               <button onclick="clearBatchQueue()" class="text-xs text-red-650 dark:text-red-400 hover:underline flex items-center gap-1">
-                <i class="fa-regular fa-trash-can"></i> 清空佇列
+                <i class="fa-regular fa-trash-can"></i> 清空队列
               </button>
             </div>
             
@@ -294,18 +294,18 @@
             <div id="batch-file-list" class="flex-1 overflow-y-auto p-3 flex flex-col gap-2 max-h-[300px]">
               <div id="batch-empty-state" class="h-full flex flex-col items-center justify-center text-slate-400 py-12">
                 <i class="fa-regular fa-folder text-3xl mb-2 text-slate-300 dark:text-slate-700"></i>
-                <p class="text-xs">目前無上傳檔案，請拖曳檔案進來開始批次轉換工作</p>
+                <p class="text-xs">目前无上传文件，请拖拽文件进来开始批量转换工作</p>
               </div>
             </div>
 
             <!-- Action Panel -->
             <div class="p-4 bg-slate-100/50 dark:bg-slate-800/40 border-t border-slate-200 dark:border-slate-700 flex flex-col md:flex-row items-center justify-between gap-4 flex-shrink-0">
               <div class="text-xs text-slate-550 dark:text-slate-400 text-left w-full md:w-auto">
-                當前排版樣式：<span id="batch-summary-style" class="font-semibold text-blue-600 dark:text-blue-400">專業商務報告 / 微軟正黑體 / 11.5pt</span>
+                当前排版样式：<span id="batch-summary-style" class="font-semibold text-blue-600 dark:text-blue-400">专业商务报告 / 微软雅黑 / 10pt</span>
               </div>
               <button id="batch-export-btn" onclick="exportBatchToDocx()" disabled class="w-full md:w-auto bg-slate-400 text-white cursor-not-allowed px-6 py-3 rounded-xl font-bold shadow-md transition flex items-center justify-center gap-2 text-sm">
                 <i class="fa-solid fa-file-shield"></i>
-                <span>開始批次編譯並打包下載</span>
+                <span>开始批量编译并打包下载</span>
               </button>
             </div>
           </div>
@@ -316,16 +316,16 @@
           <!-- Document Metadata Info -->
           <div class="bg-slate-50 dark:bg-slate-900/40 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
             <h3 class="text-sm font-bold text-slate-700 dark:text-slate-200 mb-3 flex items-center gap-2">
-              <i class="fa-regular fa-id-card text-blue-500"></i> 1. 文件後設資料 (Metadata)
+              <i class="fa-regular fa-id-card text-blue-500"></i> 1. 文档元数据 (Metadata)
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">文件標題 (匯出的檔名)</label>
-                <input type="text" id="doc-title" value="專業報告" class="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
+                <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">文件标题 (导出的文件名)</label>
+                <input type="text" id="doc-title" value="专业报告" class="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
               </div>
               <div>
-                <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">作者 / 建立者</label>
-                <input type="text" id="doc-creator" value="系統管理員" class="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
+                <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">作者 / 创建者</label>
+                <input type="text" id="doc-creator" value="系统管理员" class="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
               </div>
             </div>
           </div>
@@ -333,41 +333,41 @@
           <!-- Document Formatting Stylesheets -->
           <div class="bg-slate-50 dark:bg-slate-900/40 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
             <h3 class="text-sm font-bold text-slate-700 dark:text-slate-200 mb-3 flex items-center gap-2">
-              <i class="fa-solid fa-wand-magic-sparkles text-blue-500"></i> 2. 套用 Word 文件主題
+              <i class="fa-solid fa-wand-magic-sparkles text-blue-500"></i> 2. 应用 Word 文件主题
             </h3>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <!-- Select Layout Theme -->
               <div>
-                <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">精選排版風格</label>
+                <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">精选排版风格</label>
                 <select id="theme-select" onchange="onLayoutConfigChange()" class="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
-                  <option value="business">專業商務報告 (Business Report)</option>
-                  <option value="academic">學術論文格式 (Academic APA Style)</option>
-                  <option value="technical">技術規格文件 (Technical Spec)</option>
-                  <option value="classic">簡約文藝風 (Classic Elegant)</option>
+                  <option value="business">专业商务报告 (Business Report)</option>
+                  <option value="academic">学术论文格式 (Academic APA Style)</option>
+                  <option value="technical">技术规格文件 (Technical Spec)</option>
+                  <option value="classic">简约文艺风 (Classic Elegant)</option>
                 </select>
               </div>
 
               <!-- Base Font Family selection -->
               <div>
-                <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">主要字型 (Word中將套用)</label>
+                <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">主要字体 (Word中将应用)</label>
                 <select id="font-select" onchange="onLayoutConfigChange()" class="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
-                  <option value="Microsoft JhengHei, 微軟正黑體">微軟正黑體 (推薦商務)</option>
-                  <option value="PMingLiU, 新細明體">新細明體 (古典優雅)</option>
-                  <option value="BiauKai, 標楷體">標楷體 (嚴謹公文)</option>
-                  <option value="Times New Roman">Times New Roman (英文學術)</option>
-                  <option value="Arial">Arial (英文現代)</option>
-                  <option value="Calibri">Calibri (Microsoft Office 預設)</option>
+                  <option value="Microsoft YaHei, 微软雅黑">微软雅黑 (推荐商务)</option>
+                  <option value="SimSun, 宋体">宋体 (古典优雅)</option>
+                  <option value="KaiTi, 楷体">楷体 (严谨公文)</option>
+                  <option value="Times New Roman">Times New Roman (英文学术)</option>
+                  <option value="Arial">Arial (英文现代)</option>
+                  <option value="Calibri">Calibri (Microsoft Office 默认)</option>
                 </select>
               </div>
 
               <!-- General Font size -->
               <div>
-                <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">內文字型大小 (pt)</label>
+                <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">内文字体大小 (pt)</label>
                 <select id="fontsize-select" onchange="onLayoutConfigChange()" class="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
-                  <option value="10">10 pt (小)</option>
+                  <option value="10" selected>10 pt (小)</option>
                   <option value="11">11 pt</option>
-                  <option value="11.5" selected>11.5 pt (最適)</option>
+                  <option value="11.5">11.5 pt (最适)</option>
                   <option value="12">12 pt (中)</option>
                   <option value="14">14 pt (大)</option>
                 </select>
@@ -377,10 +377,10 @@
               <div>
                 <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">行高 (Line Spacing)</label>
                 <select id="lineheight-select" onchange="onLayoutConfigChange()" class="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
-                  <option value="1.15">1.15 倍行高 (緊湊)</option>
-                  <option value="1.3">1.3 倍行高 (精緻)</option>
-                  <option value="1.5" selected>1.5 倍行高 (標準商務)</option>
-                  <option value="2.0">2.0 倍行高 (雙倍 APA)</option>
+                  <option value="1.15" selected>1.15 倍行高 (紧凑)</option>
+                  <option value="1.3">1.3 倍行高 (精致)</option>
+                  <option value="1.5">1.5 倍行高 (标准商务)</option>
+                  <option value="2.0">2.0 倍行高 (双倍 APA)</option>
                 </select>
               </div>
             </div>
@@ -389,39 +389,39 @@
           <!-- Document Page Margins and Layout setup -->
           <div class="bg-slate-50 dark:bg-slate-900/40 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
             <h3 class="text-sm font-bold text-slate-700 dark:text-slate-200 mb-3 flex items-center gap-2">
-              <i class="fa-regular fa-file-lines text-blue-500"></i> 3. 頁面版面與邊距設定
+              <i class="fa-regular fa-file-lines text-blue-500"></i> 3. 页面版面与边距设置
             </h3>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
               <!-- Paper Orientation -->
               <div>
-                <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">紙張方向</label>
+                <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">纸张方向</label>
                 <div class="flex gap-2">
                   <button id="orient-portrait" onclick="setOrientation('portrait')" class="flex-1 py-2 px-2 border border-blue-500 bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 rounded-lg text-xs md:text-sm font-medium flex items-center justify-center gap-1 transition">
-                    <i class="fa-solid fa-arrows-up-down"></i> 直向 (Portrait)
+                    <i class="fa-solid fa-arrows-up-down"></i> 纵向 (Portrait)
                   </button>
                   <button id="orient-landscape" onclick="setOrientation('landscape')" class="flex-1 py-2 px-2 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-lg text-xs md:text-sm font-medium flex items-center justify-center gap-1 transition">
-                    <i class="fa-solid fa-arrows-left-right"></i> 橫向 (Landscape)
+                    <i class="fa-solid fa-arrows-left-right"></i> 横向 (Landscape)
                   </button>
                 </div>
               </div>
 
               <!-- Paper Size Selection (A4/A3) -->
               <div>
-                <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">紙張大小</label>
+                <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">纸张大小</label>
                 <select id="papersize-select" onchange="onPaperSizeChange()" class="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
-                  <option value="A4" selected>A4 (標準紙張 21.0x29.7cm)</option>
-                  <option value="A3">A3 (大型圖表/圖面 29.7x42.0cm)</option>
+                  <option value="A4" selected>A4 (标准纸张 21.0x29.7cm)</option>
+                  <option value="A3">A3 (大型图表/图面 29.7x42.0cm)</option>
                 </select>
               </div>
 
               <!-- Page Margins presets -->
               <div>
-                <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">邊距樣式 (預設公分)</label>
+                <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">边距样式 (默认厘米)</label>
                 <select id="margin-select" onchange="onLayoutConfigChange()" class="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
-                  <option value="normal">標準邊距 (上下左右 2.54 cm / 1 inch)</option>
-                  <option value="narrow">窄邊距 (上下左右 1.27 cm / 0.5 inch)</option>
-                  <option value="wide">寬邊距 (上下 2.54 cm、左右 5.08 cm)</option>
+                  <option value="normal">标准边距 (上下左右 2.54 cm / 1 inch)</option>
+                  <option value="narrow" selected>窄边距 (上下左右 1.27 cm / 0.5 inch)</option>
+                  <option value="wide">宽边距 (上下 2.54 cm、左右 5.08 cm)</option>
                 </select>
               </div>
             </div>
@@ -430,7 +430,7 @@
 
         <!-- Tab 3: Template Gallery -->
         <div id="templates-tab" class="hidden flex flex-col gap-4">
-          <p class="text-sm text-slate-500 dark:text-slate-400 mb-2">您可以直接載入預設文件範本進行編輯測試：</p>
+          <p class="text-sm text-slate-500 dark:text-slate-400 mb-2">您可以直接加载默认文件模板进行编辑测试：</p>
           
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <!-- Template 1 -->
@@ -439,8 +439,8 @@
                 <i class="fa-regular fa-address-card"></i>
               </div>
               <div class="flex-1">
-                <h4 class="font-bold text-sm text-slate-800 dark:text-slate-100">專業求職履歷範本 (Resume Draft)</h4>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">包含個人簡介、技能列表、工作經歷與學術背景，推薦使用【文藝經典風】。</p>
+                <h4 class="font-bold text-sm text-slate-800 dark:text-slate-100">专业求职简历模板 (Resume Draft)</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">包含个人简介、技能列表、工作经历与学术背景，推荐使用【文艺经典风】。</p>
               </div>
             </div>
 
@@ -450,8 +450,8 @@
                 <i class="fa-regular fa-calendar-check"></i>
               </div>
               <div class="flex-1">
-                <h4 class="font-bold text-sm text-slate-800 dark:text-slate-100">專案會議記錄 (Meeting Minutes)</h4>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">包含決議事項表格、任務待辦清單與時程安排，推薦使用【專業商務報告】。</p>
+                <h4 class="font-bold text-sm text-slate-800 dark:text-slate-100">项目会议记录 (Meeting Minutes)</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">包含决议事项表格、任务待办列表与日程安排，推荐使用【专业商务报告】。</p>
               </div>
             </div>
 
@@ -461,8 +461,8 @@
                 <i class="fa-regular fa-file-lines"></i>
               </div>
               <div class="flex-1">
-                <h4 class="font-bold text-sm text-slate-800 dark:text-slate-100">學術或研究報告 (Research Report)</h4>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">配備標準 APA 引述、長表格、Json 範本結構，推薦使用【學術論文 APA 格式】。</p>
+                <h4 class="font-bold text-sm text-slate-800 dark:text-slate-100">学术或研究报告 (Research Report)</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">配备标准 APA 引述、长表格、Json 模板结构，推荐使用【学术论文 APA 格式】。</p>
               </div>
             </div>
 
@@ -472,8 +472,8 @@
                 <i class="fa-solid fa-chalkboard-user"></i>
               </div>
               <div class="flex-1">
-                <h4 class="font-bold text-sm text-slate-800 dark:text-slate-100">國中小簡案/教案設計範本</h4>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">包含教學目標、核心素養、詳細教學活動步驟與時間分配。推薦使用【專業商務】或【簡約文藝】。</p>
+                <h4 class="font-bold text-sm text-slate-800 dark:text-slate-100">中小学简案/教案设计模板</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">包含教学目标、核心素养、详细教学活动步骤与时间分配。推荐使用【专业商务】或【简约文艺】。</p>
               </div>
             </div>
 
@@ -483,8 +483,8 @@
                 <i class="fa-solid fa-file-signature"></i>
               </div>
               <div class="flex-1">
-                <h4 class="font-bold text-sm text-slate-800 dark:text-slate-100">學生課堂學習單範本</h4>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">包含班級座號姓名欄、小組合作統計表、反思問題與自我檢核。推薦使用【簡約文藝風】。</p>
+                <h4 class="font-bold text-sm text-slate-800 dark:text-slate-100">学生课堂学习单模板</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">包含班级座号姓名栏、小组合作统计表、反思问题与自我检查。推荐使用【简约文艺风】。</p>
               </div>
             </div>
 
@@ -494,8 +494,8 @@
                 <i class="fa-solid fa-bullhorn"></i>
               </div>
               <div class="flex-1">
-                <h4 class="font-bold text-sm text-slate-800 dark:text-slate-100">班級生活公約與親師通知</h4>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">配備生活公約常規守則、每週叮嚀行事曆，以及精美的親師回條虛線分割欄。</p>
+                <h4 class="font-bold text-sm text-slate-800 dark:text-slate-100">班级生活公约与亲师通知</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">配备生活公约常规守则、每周叮咛日程表，以及精美的亲师回条虚线分割栏。</p>
               </div>
             </div>
           </div>
@@ -514,7 +514,7 @@
       <div class="bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4 flex items-center justify-between flex-shrink-0">
         <div class="flex items-center gap-2">
           <i class="fa-regular fa-eye text-blue-600 dark:text-blue-400 text-lg"></i>
-          <span class="font-bold text-sm text-slate-700 dark:text-slate-200">Word 排版即時預覽 (全畫面模式)</span>
+          <span class="font-bold text-sm text-slate-700 dark:text-slate-200">Word 排版实时预览 (全屏模式)</span>
         </div>
         
         <!-- Controls -->
@@ -522,15 +522,15 @@
           <!-- View Modes toggle inside modal -->
           <div class="flex bg-slate-200 dark:bg-slate-900 p-1 rounded-lg">
             <button id="view-mode-a4" onclick="setViewMode('a4')" class="px-3 py-1 text-xs font-semibold rounded bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 shadow-sm flex items-center gap-1.5 transition">
-              <i class="fa-solid fa-sheet-plastic text-[10px]"></i> 紙張模擬
+              <i class="fa-solid fa-sheet-plastic text-[10px]"></i> 纸张模拟
             </button>
             <button id="view-mode-fluid" onclick="setViewMode('fluid')" class="px-3 py-1 text-xs font-semibold rounded text-slate-600 dark:text-slate-400 flex items-center gap-1.5 transition">
-              <i class="fa-solid fa-arrows-alt text-[10px]"></i> 自適應
+              <i class="fa-solid fa-arrows-alt text-[10px]"></i> 自适应
             </button>
           </div>
           
           <!-- Close button -->
-          <button onclick="closePreviewModal()" class="p-1.5 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 transition" title="關閉預覽 (鍵盤 ESC 亦可)">
+          <button onclick="closePreviewModal()" class="p-1.5 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 transition" title="关闭预览 (键盘 ESC 亦可)">
             <i class="fa-solid fa-xmark text-lg"></i>
           </button>
         </div>
@@ -549,17 +549,17 @@
   </div>
 
   <footer class="bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 py-3 text-center text-xs text-slate-500 dark:text-slate-400 flex-shrink-0 font-sans">
-    Made by <a href="https://kentxchang.blogspot.tw" target="_blank" class="text-blue-600 dark:text-blue-400 font-bold hover:underline"><i class="fa-solid fa-graduation-cap"></i> 阿剛老師</a> | 本工具採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh_TW" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline">CC BY-NC-SA 4.0 授權共享</a>
+    作者：<a href="https://kentxchang.blogspot.tw" target="_blank" class="text-blue-600 dark:text-blue-400 font-bold hover:underline"><i class="fa-solid fa-graduation-cap"></i> 阿刚老师</a> | 本工具采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh_Hans" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline">CC BY-NC-SA 4.0 授权共享</a>
   </footer>
 
   <script>
     /* Document Theme CSS Definitions to load into dynamic-preview-styles (ONLY FOR WEB PREVIEW) */
     const THEMES = {
       business: {
-        name: "專業商務報告 (Business Report)",
+        name: "专业商务报告 (Business Report)",
         styles: `
           body, .docx-preview {
-            font-family: 'Noto Sans TC', sans-serif;
+            font-family: 'Noto Sans SC', sans-serif;
             font-size: 11.5pt;
             line-height: 1.6;
             color: #334155;
@@ -590,7 +590,7 @@
           .docx-preview p {
             margin-top: 0;
             margin-bottom: 10pt;
-            text-align: justify;
+            text-align: left;
           }
           .docx-preview a {
             color: #2563eb;
@@ -677,10 +677,10 @@
         `
       },
       academic: {
-        name: "學術論文格式 (Academic APA Style)",
+        name: "学术论文格式 (Academic APA Style)",
         styles: `
           body, .docx-preview {
-            font-family: 'Times New Roman', 'BiauKai', '標楷體', serif;
+            font-family: 'Times New Roman', 'KaiTi', '楷体', serif;
             font-size: 12pt;
             line-height: 2.0;
             color: #000000;
@@ -773,7 +773,7 @@
         `
       },
       technical: {
-        name: "技術規格文件 (Technical Spec)",
+        name: "技术规格文件 (Technical Spec)",
         styles: `
           body, .docx-preview {
             font-family: 'Consolas', 'Segoe UI', sans-serif;
@@ -882,10 +882,10 @@
         `
       },
       classic: {
-        name: "簡約文藝風 (Classic Elegant)",
+        name: "简约文艺风 (Classic Elegant)",
         styles: `
           body, .docx-preview {
-            font-family: 'Georgia', 'BiauKai', '標楷體', serif;
+            font-family: 'Georgia', 'KaiTi', '楷体', serif;
             font-size: 11.5pt;
             line-height: 1.7;
             color: #292524;
@@ -1013,99 +1013,99 @@
 
   <!-- Template Contents (Base64 ready structured raw Markdowns) -->
   <script>
-    const RESUME_TEMPLATE = `# 汪大東 (Da-Dong Wang)
+    const RESUME_TEMPLATE = `# 汪大东 (Da-Dong Wang)
     
-電子郵件：dadong.wang@example.com | 電話：0912-345-678 | 個人網站：[myportfolio.com](https://example.com)
+电子邮件：dadong.wang@example.com | 电话：0912-345-678 | 个人网站：[myportfolio.com](https://example.com)
 
 ---
 
-## 職涯目標
-具備 5 年前端開發經驗的資深工程師，專精於 React、Vue 與前端性能優化。致力於建構高易用性、高效能的網頁應用，並協助團隊提升技術水準。
+## 职业生涯目标
+具备 5 年前端开发经验的资深工程师，专精于 React、Vue 与前端性能优化。致力于建构高易用性、高效能的网页应用，并协助团队提升技术水准。
 
-## 專業技能
-- **前端技術**：JavaScript (ES6+), TypeScript, React, Vue, HTML5/CSS3, Tailwind CSS
-- **後端技術**：Node.js, Express, RESTful APIs, GraphQL
-- **工具與流程**：Git, Webpack, Vite, Docker, CI/CD Pipelines
+## 专业技能
+- **前端技术**：JavaScript (ES6+), TypeScript, React, Vue, HTML5/CSS3, Tailwind CSS
+- **后端技术**：Node.js, Express, RESTful APIs, GraphQL
+- **工具与流程**：Git, Webpack, Vite, Docker, CI/CD Pipelines
 
-## 工作經歷
+## 工作经历
 
-### 開發金鑰科技股份有限公司 — 資深前端工程師
+### 开发金钥科技股份有限公司 — 资深前端工程师
 *2023 年 6 月 – 至今*
 
-- 帶領 4 人前端團隊重構核心電商系統，提升加載速度 **40%**。
-- 導入 TypeScript 與 Jest 單元測試，將系統 Bug 率降低 **25%**。
-- 實作高階圖表與資料視覺化看板，服務 OVER 10 萬日活躍用戶。
+- 带领 4 人前端团队重构核心电商系统，提升加载速度 **40%**。
+- 导入 TypeScript 与 Jest 单元测试，将系统 Bug 率降低 **25%**。
+- 实现高阶图表与数据可视化看板，服务超过 10 万日活跃用户。
 
-### 雲端數位創意工作室 — 前端工程師
+### 云端数位创意工作室 — 前端工程师
 *2021 年 3 月 – 2023 年 5 月*
 
-- 獨立開發 5+ 個企業形象網站與 RWD 響應式系統。
-- 與設計師密切配合，100% 還原設計稿，提升操作體驗與用戶流暢度。
+- 独立开发 5+ 个企业形象网站与 RWD 响应式系统。
+- 与设计师密切配合，100% 还原设计稿，提升操作体验与用户流畅度。
 
 ## 教育背景
-- **國立台灣大學** — 資訊工程學系 學士 (2017 - 2021)
-- **卓越高中** — 理工自然組 (2014 - 2017)`;
+- **国立台湾大学** — 信息工程学系 学士 (2017 - 2021)
+- **卓越高中** — 理工自然组 (2014 - 2017)`;
 
-    const MEETING_TEMPLATE = `# 專案進度與技術重構會議記錄
+    const MEETING_TEMPLATE = `# 项目进度与技术重构会议记录
 
 **日期**：2026年5月24日  
-**時間**：10:00 - 11:30  
-**主持人**：陳經理  
-**記錄人**：李小美  
-**出席人員**：張小明、林大華、王大同、趙經理
+**时间**：10:00 - 11:30  
+**主持人**：陈经理  
+**记录人**：李小美  
+**出席人员**：张小明、林大华、王大同、赵经理
 
 ---
 
-## 會議議題
-1. Q2 核心功能上線進度回報
-2. 系統架構重構與資料庫優化討論
-3. 臨時動議與下階段規劃
+## 会议议题
+1. Q2 核心功能上线进度回报
+2. 系统架构重构与数据库优化讨论
+3. 临时动议与下阶段规划
 
-## 決議事項
+## 决议事项
 
-| 事項 | 負責人 | 期限 | 狀態 |
+| 事项 | 负责人 | 期限 | 状态 |
 | :--- | :---: | :---: | :---: |
-| 前端 UI 模組化重構 | 張小明 | 2026/06/10 | 進行中 |
-| 資料庫索引（Index）重整 | 林大華 | 2026/06/05 | 已確認 |
-| API 規格書更新 | 王大同 | 2026/05/28 | 尚未開始 |
+| 前端 UI 模块化重构 | 张小明 | 2026/06/10 | 进行中 |
+| 数据库索引（Index）重整 | 林大华 | 2026/06/05 | 已确认 |
+| API 规格书更新 | 王大同 | 2026/05/28 | 尚未开始 |
 
-## 詳細討論內容
+## 详细讨论内容
 
-### 1. 核心功能上線進度
-- 目前購物車與金流串接功能已通過測試，進度達 **90%**。
-- 第三方物流 SDK 有發生偶發性超時（Timeout）問題，大華正在與物流工程師協調。
+### 1. 核心功能上线进度
+- 目前购物车与金流串接功能已通过测试，进度达 **90%**。
+- 第三方物流 SDK 有发生偶发性超时（Timeout）问题，大华正在与物流工程师协调。
 
-### 2. 架構重構
-- > **重要決議**：為維護程式碼品質，團隊一致決定自下週起導入嚴格的 Code Review 機制。每次 Pull Request 需至少有兩位團隊成員核准（Approve）才能合併。
-- 前端將逐步淘汰舊版複雜組件，改用更輕量、響應式的元件架構。
+### 2. 架构重构
+- > **重要决议**：为维护代码品质，团队一致决定自下周起导入严格的 Code Review 机制。每次 Pull Request 需至少有两位团队成员核准（Approve）才能合并。
+- 前端将逐步淘汰旧版复杂组件，改用更轻量、响应式的组件架构。
 
-## 待辦清單
-- [x] 準備測試環境帳號
-- [ ] 提交資料庫優化方案報告
-- [ ] 撰寫下期行銷活動技術支援評估`;
+## 待办列表
+- [x] 准备测试环境账号
+- [ ] 提交数据库优化方案报告
+- [ ] 撰写下期营销活动技术支持评估`;
 
-    const REPORT_TEMPLATE = `# 台灣智慧城市發展與綠能轉型研究報告
+    const REPORT_TEMPLATE = `# 台湾智慧城市发展与绿能转型研究报告
 
-**研究單位**：永續科技與政策研究所  
-**發表日期**：2026 年 5 月  
-**主筆人**：黃研究員  
+**研究单位**：永续科技与政策研究所  
+**发表日期**：2026 年 5 月  
+**主笔人**：黄研究员  
 
 ---
 
 ## 摘要
-本報告針對台灣近年來在智慧城市建設與再生能源轉型上的整合成果進行全面性剖析。透過對三大核心都會區（台北、台中、高雄）的智慧電網與綠能公交系統數據進行定量分析，評估節能減碳政策的實質綜效，並提出未來政策之具體建議。
+本报告针对台湾近年来在智慧城市建设与再生能源转型上的整合成果进行全面性剖析。透过对三大核心都会区（台北、台中、高雄）的智慧电网与绿能公交系统数据进行定量分析，评估节能减碳政策的实质综效，并提出未来政策之具体建议。
 
-## 1. 緒論
-隨著全球氣候變遷加劇，各國政府紛紛將「綠能轉型」納入國家核心發展戰略。智慧城市（Smart City）概念透過物聯網（IoT）、人工智慧（AI）與大數據（Big Data）等技術，能有效對城市運作進行數位化管理，達到節能、減排、提效的最終目標。
+## 1. 绪论
+随着全球气候变迁加剧，各国政府纷纷将「绿能转型」纳入国家核心发展战略。智慧城市（Smart City）概念透过物联网（IoT）、人工智能（AI）与大数据（Big Data）等技术，能有效对城市运作进行数字化管理，达到节能、减排、提效的最终目标。
 
-### 1.1 研究動機與目的
-- **評估政策成效**：釐清各縣市綠能推動之實際碳減排數據。
-- **找出發展瓶頸**：探討老舊都市電網在併網綠能（如太陽能、風力）時面臨的挑戰。
+### 1.1 研究动机与目的
+- **评估政策成效**：厘清各县市绿能推动之实际碳减排数据。
+- **找出发展瓶颈**：探讨老旧都市电网在并网绿能（如太阳能、风力）时面临的挑战。
 
-## 2. 數據分析與評估
+## 2. 数据分析与评估
 
-### 2.1 減碳效能統計
-根據 2024 至 2025 年之追蹤數據，導入智慧電網與路燈節能系統後，都會區平均電力消耗降低了約 **15.4%**，其中以高雄市的工業區綠能轉型幅度最為顯著。
+### 2.1 减碳效能统计
+根据 2024 至 2025 年之追踪数据，导入智慧电网与路灯节能系统后，都会区平均电力消耗降低了约 **15.4%**，其中以高雄市的工业区绿能转型幅度最为显著。
 
 \`\`\`json
 {
@@ -1115,54 +1115,54 @@
 }
 \`\`\`
 
-### 2.2 縣市綠能覆蓋率與滿意度
+### 2.2 县市绿能覆盖率与满意度
 
-| 城市 | 智慧電網覆蓋率 | 再生能源佔比 | 市民政策滿意度 |
+| 城市 | 智慧电网覆盖率 | 再生能源占比 | 市民政策满意度 |
 | :--- | :---: | :---: | :---: |
 | 台北市 | 85% | 12% | 78% |
 | 台中市 | 72% | 18% | 81% |
 | 高雄市 | 68% | 25% | 85% |
 
-## 3. 結論與政策建議
-綜合上述研究，提出以下兩點關鍵政策建言：
-1. **加速儲能系統（BESS）建設**：綠能發電具波動性，需加強儲能基建以維持電網頻率穩定。
-2. **公私協力模式（PPP）**：引建民間資本加速智慧交通充電樁之佈局。`;
+## 3. 结论与政策建议
+综合上述研究，提出以下两点关键政策建言：
+1. **加速储能系统（BESS）建设**：绿能发电具波动性，需加强储能基建以维持电网频率稳定。
+2. **公私协力模式（PPP）**：引建民间资本加速智慧交通充电桩之布局。`;
 
-    const BASIC_TEMPLATE = `# 歡迎使用 Markdown 轉 Word 專業排版工具！
+    const BASIC_TEMPLATE = `# 欢迎使用 Markdown 转 Word 专业排版工具！
 
-這是一個完全在**瀏覽器端運行**的 Markdown 編輯器與 Word 格式轉換器。您上傳的任何檔案、圖片與輸入的內容都**不會**上傳到伺服器，保障您的資料安全與隱私。
+这是一个完全在**浏览器端运行**的 Markdown 编辑器与 Word 格式转换器。您上传的任何文件、图片与输入的内容都**不会**上传到服务器，保障您的数据安全与隐私。
 
 ---
 
 ## 💡 主要功能特色
-- **即時 A3/A4 紙張預覽**：支援一般自適應視角與 A3/A4 模擬紙張視角，排版細節一目了然。
-- **四大專屬風格樣式**：
-  1. *專業商務報告 (Business Report)*：現代洗鍊、科技藍色主調.
-  2. *學術論文格式 (Academic APA Style)*：Times New Roman、嚴謹格式、APA 標準三線表。
-  3. *技術規格文件 (Technical Spec)*：程式碼高亮、緊湊排版。
-  4. *簡約文藝風 (Classic Elegant)*：Georgia 襯線體、人文褐色優雅視覺。
-- **智慧工具欄**：一鍵套用粗體、斜體、表格、清單與代辦事項。
-- **自動目錄生成**：勾選即可依據大綱標題（H1 ~ H3）自動生成 Word 目錄。
-- **拖放圖片自動轉 Base64**：拖曳圖片或檔案進入編輯器即可將圖片編碼，確保匯出時能順利嵌入 Word。
+- **实时 A3/A4 纸张预览**：支持一般自适应视角与 A3/A4 模拟纸张视角，排版细节一目了然。
+- **四大专属风格样式**：
+  1. *专业商务报告 (Business Report)*：现代洗练、科技蓝色主调.
+  2. *学术论文格式 (Academic APA Style)*：Times New Roman、严谨格式、APA 标准三线表。
+  3. *技术规格文件 (Technical Spec)*：代码高亮、紧凑排版。
+  4. *简约文艺风 (Classic Elegant)*：Georgia 衬线体、人文褐色优雅视觉。
+- **智能工具栏**：一键应用粗体、斜体、表格、列表与待办事项。
+- **自动目录生成**：勾选即可依据大纲标题（H1 ~ H3）自动生成 Word 目录。
+- **拖放图片自动转 Base64**：拖拽图片或文件进入编辑器即可将图片编码，确保导出时能顺利嵌入 Word。
 
 ---
 
-## 📊 表格排版測試
+## 📊 表格排版测试
 
-| 產品名稱 | 版本 | 支援平台 | 當前狀態 |
+| 产品名称 | 版本 | 支持平台 | 当前状态 |
 | :--- | :---: | :---: | :---: |
-| Markdown 轉 DOCX 系統 | v1.1.0 | Chrome / Edge / Safari | 穩定運作 |
-| 智慧目錄生成器 | v1.2.1 | 所有現代瀏覽器 | 穩定運作 |
-| 跨平台 base64 圖片編碼 | v1.0.5 | HTML5 File API | 開源共享 |
+| Markdown 转 DOCX 系统 | v1.1.0 | Chrome / Edge / Safari | 稳定运作 |
+| 智能目录生成器 | v1.2.1 | 所有现代浏览器 | 稳定运作 |
+| 跨平台 base64 图片编码 | v1.0.5 | HTML5 File API | 开源共享 |
 
 ---
 
-## 📝 引用與程式碼測試
+## 📝 引用与代码测试
 
-> 這是一段引用區塊的文字。在商務報告風格中，它會以漂亮的左邊藍色粗線與淡灰色背景顯示，能有效襯托重點內容。
+> 这是一段引用区块的文字。在商务报告风格中，它会以漂亮的左边蓝色粗线与淡灰色背景显示，能有效衬托重点内容。
 
 \`\`\`javascript
-// 核心轉換邏輯示範
+// 核心转换逻辑示范
 const docHtml = compileHtmlWithStyles(markdownHtml);
 const blob = htmlDocx.asBlob(docHtml, {
   orientation: 'portrait',
@@ -1173,128 +1173,128 @@ saveAs(blob, 'my_document.docx');
 
 ---
 
-## ✅ 待辦清單 (Task List)
-- [x] 上傳 .md/.txt 檔案
-- [x] 即時預覽與 A3/A4 視角切換
-- [x] 拖曳圖片嵌入 Base64
-- [ ] 勾選排版風格、自訂字型大小與行高
-- [ ] 點擊右上角「下載 DOCX 檔案」一鍵下載！`;
+## ✅ 待办列表 (Task List)
+- [x] 上传 .md/.txt 文件
+- [x] 实时预览与 A3/A4 视角切换
+- [x] 拖拽图片嵌入 Base64
+- [ ] 勾选排版风格、自定义字体大小与行高
+- [ ] 点击右上角「下载 DOCX 文件」一键下载！`;
 
-    // 教學簡案範本
-    const LESSON_PLAN_TEMPLATE = `# 【教案】六年級自然與生活科技：認識太陽能與綠色能源
+    // 教学简案模板
+    const LESSON_PLAN_TEMPLATE = `# 【教案】六年级自然与生活科技：认识太阳能与绿色能源
 
-**設計者**：林小華 老師 | **教學對象**：國小六年級 | **教學時間**：40 分鐘（一節課）
+**设计者**：林小华 老师 | **教学对象**：小学六年级 | **教学时间**：40 分钟（一节课）
 
 ---
 
-## 一、 教學目標
-1. **認知**：學生能說出太陽能發電的基本原理與綠色能源的優點。
-2. **技能**：學生能利用簡易材料組裝太陽能小車，並在陽光下進行測試。
-3. **情意**：學生能建立節能減碳的環保觀念，並嘗試落實於日常生活中。
+## 一、 教学目标
+1. **认知**：学生能说出太阳能发电的基本原理与绿色能源的优点。
+2. **技能**：学生能利用简易材料组装太阳能小车，并在阳光下进行测试。
+3. **情意**：学生能建立节能减碳的环保观念，并尝试落实于日常生活中。
 
-## 二、 核心素養（對應 108 綱）
-- **A 自主行動**：自-E-A1 具備探索科學問題的思考能力，並展現嘗試與創新的熱忱。
-- **B 溝通互動**：自-E-B1 能運用語言、文字、圖表進行科學現象的溝通與探問。
+## 二、 核心素养（对应 108 纲）
+- **A 自主行动**：自-E-A1 具备探索科学问题的思考能力，并展现尝试与创新的热忱。
+- **B 沟通互动**：自-E-B1 能运用语言、文字、图表进行科学现象的沟通与探问。
 
-## 三、 Teaching Preparations
-- **教師準備**：太陽能發電演示模組、互動簡報、綠能介紹短片、組裝套件。
-- **學生準備**：鉛筆、筆記本、小組探索學習單（每組一份）。
+## 三、 教学准备
+- **教师准备**：太阳能发电演示模块、互动简报、绿能介绍短片、组装套件。
+- **学生准备**：铅笔、笔记本、小组探索学习单（每组一份）。
 
-## 四、 Teaching Activities
+## 四、 教学活动
 
-| 教學步驟 | 教學活動細節內容 | 時間 (分) | 評量方式 |
+| 教学步骤 | 教学活动细节内容 | 时间 (分) | 评量方式 |
 | :--- | :--- | :---: | :---: |
-| **1. 引起動機** | 播放 "無電生活一日體驗" 引導問題，讓學生思考當化石能源耗盡時，世界會變成怎樣。 | 5 分鐘 | 口頭回答評量 |
-| **2. 概念發展** | 介紹太陽能光電面板的基本轉換概念，並以圖表比較傳統火力、核能與太陽能發電的優缺點。 | 15 分鐘 | 課堂專注度評量 |
-| **3. 小組實作** | 發放太陽能晶片小車材料，學生分組合作拼裝，並實際移動至陽光下微調角度使小車運作。 | 15 分鐘 | 分組合作與操作評量 |
-| **4. 總結回饋** | 回收教具，引導小組發表拼裝與調度心得，引導填寫 "生活綠能實踐自我檢核表"。 | 5 分鐘 | 學習單與自我評量 |
+| **1. 引起动机** | 播放 "无电生活一日体验" 引导问题，让学生思考当化石能源耗尽时，世界会变成怎样。 | 5 分钟 | 口头回答评量 |
+| **2. 概念发展** | 介绍太阳能光电面板的基本转换概念，并以图表比较传统火力、核能与太阳能发电的优缺点。 | 15 分钟 | 课堂专注度评量 |
+| **3. 小组实践** | 发放太阳能芯片小车材料，学生分组合作拼装，并实际移动至阳光下微调角度使小车运作。 | 15 分钟 | 分组合作与操作评量 |
+| **4. 总结回馈** | 回收教具，引导小组发表拼装与调度心得，引导填写 "生活绿能实践自我检查表"。 | 5 分钟 | 学习单与自我评量 |
 
 ---
 
-## 五、 課後延伸任務與評量指標
-- **延伸觀察**：觀察記錄自己家中的用電設備，找出一項可替換成節能環保型態的電器（如LED燈、一級節能冷氣），於下週與同學交流。`;
+## 五、 课后延伸任务与评量指标
+- **延伸观察**：观察记录自己家中的用电设备，找出一项可替换成节能环保型态的电器（如LED灯、一级节能空调），于下周与同学交流。`;
 
-    // 課堂學習單範本
-    const WORKSHEET_TEMPLATE = `# 【課堂學習單】認識我們的家鄉與歷史遺跡探索
+    // 课堂学习单模板
+    const WORKSHEET_TEMPLATE = `# 【课堂学习单】认识我们的家乡与历史遗迹探索
 
-**班級**：_________ | **座號**：_________ | **姓名**：_________ | **日期**：2026 年 5 月 24 日
+**班级**：_________ | **座号**：_________ | **姓名**：_________ | **日期**：2026 年 5 月 24 日
 
 ---
 
-## 🎯 學習任務一：地圖探索
-請觀察社會課本第 24 頁的「家鄉古蹟分布圖」，完成下列問題：
-1. 我們學校所在的縣市有哪些列為「國定古蹟」的歷史建物？（請至少寫出兩個）
+## 🎯 学习任务一：地图探索
+请观察社会课本第 24 页的「家乡古迹分布图」，完成下列问题：
+1. 我们学校所在的县市有哪些列为「国定古迹」的历史建物？（请至少写出两个）
    * 答：_____________________________________________________
-2. 承上題，這些古蹟大約建於哪一個歷史時期？其歷史地位 homes 呢？
+2. 承上题，这些古迹大约建于哪一个历史时期？其历史地位如何呢？
    * 答：_____________________________________________________
 
-## 👥 學習任務二：小組實地探訪紀錄
-本小組選擇探訪的古蹟名稱是：**【赤崁樓】**。以下為我們的探訪指標觀察統計：
+## 👥 学习任务二：小组实地探访纪录
+本小组选择探访的古迹名称是：**【赤崁楼】**。以下为我们的探访指标观察统计：
 
-| 觀察項目 | 現場實錄與發現 | 組員互評分數 |
+| 观察项目 | 现场实录与发现 | 组员互评分数 |
 | :--- | :--- | :---: |
-| **1. 建築特色** | 外觀為紅磚與中式雙層閣樓，基座有荷蘭時期的城堡城堡遺構（普羅民遮城）。 | ⭐⭐⭐⭐⭐ |
-| **2. 文物保存** | 現場保存完好的九座清代贔屭御碑，石碑下方是長得像烏龜、代表長壽的贔屭。 | ⭐⭐⭐⭐ |
-| **3. 周邊環境** | 設有精緻綠化庭園，遊客與外國觀光客眾多，現場備有多國語言解說牌。 | ⭐⭐⭐⭐⭐ |
+| **1. 建筑特色** | 外观为红砖与中式双层阁楼，基座有荷兰时期的城堡城堡遗构（普罗民遮城）。 | ⭐⭐⭐⭐⭐ |
+| **2. 文物保存** | 现场保存完好的九座清代赑屃御碑，石碑下方是长得像乌龟、代表长寿的赑屃。 | ⭐⭐⭐⭐ |
+| **3. 周边环境** | 设有精致绿化庭园，游客与外国观光客众多，现场备有多国语言解说牌。 | ⭐⭐⭐⭐⭐ |
 
-## 📝 學習任務三：我的反思與小組討論
-> **問題思考**：古蹟是歷史的重要見證。如果古蹟因為地震受損，或是影響到都市捷運的開發進度，你覺得要原地花大錢修復保存，還是拆除以利現代化開發？為什麼？
+## 📝 学习任务三：我的反思与小组讨论
+> **问题思考**：古迹是历史的重要见证。如果古迹因为地震受损，或是影响到都市捷运的开发进度，你觉得要原地花大钱修复保存，还是拆除以利现代化开发？为什么？
 >
-> **我的想法**：我認為應該要原地修復保存。因為古蹟一旦被拆掉，歷史的記憶與實體資產就再也無法還原了。雖然捷運很方便，但城市的文化底蘊是無法用金錢衡量的。
+> **我的想法**：我认为应该要原地修复保存。因为古迹一旦被拆掉，历史的记忆与实体资产就再也无法还原了。虽然捷运很方便，但城市的文化底蕴是无法用金钱衡量的。
 
 ---
 
-## 📋 學生學習自我檢核表
+## 📋 学生学习自我检查表
 
-- [x] 我有準時參與今天的小組討論並分配到任務。
-- [x] 我能準確寫出至少一處家鄉古蹟的建築特徵。
-- [ ] 我能主動協助組員拍照、錄音 or 記錄探訪內容。
-
----
-**教師評語與愛心回饋**：_____________________________________________________`;
-
-    // 班級公約與通知單範本
-    const CLASS_RULES_TEMPLATE = `# 【親師通訊】卓越國小五年三班 班級生活公約與重要通知
-
-**導師**：林大明 老師 | **日期**：2026 年 5 月 24 日 | **第十二週親師交流專欄**
+- [x] 我有准时参与今天的小组讨论并分配到任务。
+- [x] 我能准确写出至少一处家乡古迹的建筑特征。
+- [ ] 我能主动协助组员拍照、录音或记录探访内容。
 
 ---
+**教师评语与爱心回馈**：_____________________________________________________`;
 
-## ☀️ 五年三班生活公約 (Classroom Rules)
-為了建立一個溫馨、安全、高效學習且充滿笑聲的班級環境，請同學們共同遵守以下公約：
-1. **尊重他人**：發言前先舉手，不隨意打斷老師或同學說話，學會傾聽。
-2. **守時愛物**：每天早自修（7:50 前）準時進教室安靜晨讀，並愛惜學校的公物。
-3. **安全第一**：走廊不奔跑、樓梯不追逐，輕聲細語慢慢走，保護自己與他人.
-4. **認真負責**：認神打掃自己的清潔值日區域，並準時在上午交齊聯絡簿與作業。
+    // 班级公约与通知单模板
+    const CLASS_RULES_TEMPLATE = `# 【亲师通讯】卓越小学五年三班 班级生活公约与重要通知
 
-## 📢 本週重要行事曆與宣導事項
+**导师**：林大明 老师 | **日期**：2026 年 5 月 24 日 | **第十二周亲师交流专栏**
 
-| 行事項目 | 辦理日期 | 宣導說明與準備事項 | 狀態 |
+---
+
+## ☀️ 五年三班生活公约 (Classroom Rules)
+为了建立一个温馨、安全、高效学习且充满笑声的班级环境，请同学们共同遵守以下公约：
+1. **尊重他人**：发言前先举手，不随意打断老师或同学说话，学会倾听。
+2. **守时爱物**：每天早自修（7:50 前）准时进教室安静晨读，并爱惜学校的公物。
+3. **安全第一**：走廊不奔跑、楼梯不追逐，轻声细语慢慢走，保护自己与他人.
+4. **认真负责**：认真打扫自己的清洁值日区域，并准时在上午交齐联络簿与作业。
+
+## 📢 本周重要日程表与宣导事项
+
+| 行事项目 | 办理日期 | 宣导说明与准备事项 | 状态 |
 | :--- | :---: | :--- | :---: |
-| **國語科期末演說比賽** | 2026/06/03 | 演說主題為「我最感謝的人」，請同學在家練習 3 分鐘演說。 | 準備中 |
-| **夏季健康與防蚊宣導** | 即日起 | 近期天氣炎熱且常有午後陣雨，請同學每天攜帶乾淨毛巾與防蚊液。 | 持續辦理 |
-| **校外教學（天文館）** | 2026/06/15 | 當天需穿著學校運動服，自備水壺與輕便午餐，預計 15:30 返校。 | 規劃中 |
+| **国语科期末演说比赛** | 2026/06/03 | 演说主题为「我最感谢的人」，请同学在家练习 3 分钟演说。 | 准备中 |
+| **夏季健康与防蚊宣导** | 即日起 | 近期天气炎热且常有午后阵雨，请同学每天携带干净毛巾与防蚊液。 | 持续办理 |
+| **校外教学（天文馆）** | 2026/06/15 | 当天需穿着学校运动服，自备水壶与轻便午餐，预计 15:30 返校。 | 规划中 |
 
 ---
 
-## 💌 親師手記與導師溫馨叮嚀
-親愛的家長您好：
-本學期即將進入尾聲，非常感謝您一直以來對班級活動的熱心支持。最近發現部分孩子早自修有遲到情形，影響了早晨閱讀時光，還請家長協助提醒孩子提早十分鐘出門，讓一天的學習有從容、穩定的開始。
+## 💌 亲师手记与导师温馨叮咛
+亲爱的家长您好：
+本学期即将进入尾声，非常感谢您一直以来对班级活动的热心支持。最近发现部分孩子早自修有迟到情形，影响了早晨阅读时光，还请家长协助提醒孩子提早十分钟出门，让一天的学习有从容、稳定的开始。
 
-導師 林大明 敬上
+导师 林大明 敬上
 
 ---
 
-## ✂️ ------------------ 親 師 聯 絡 回 條 (請於 5/26 前交回) ------------------
+## ✂️ ------------------ 亲 师 联 络 回 条 (请于 5/26 前交回) ------------------
 
-**五年三班  學生姓名：_______________  座號：_______**
+**五年三班  学生姓名：_______________  座号：_______**
 
-- [ ] 家長已詳閱本週行事曆與班級生活公約.
-- [ ] 學生 **【能 / 不能】** 參加 6/15（一）天文館校外教學活動。
+- [ ] 家长已详阅本周日程表与班级生活公约.
+- [ ] 学生 **【能 / 不能】** 参加 6/15（一）天文馆校外教学活动。
 
-**家長意見與回饋**：___________________________________________________________
+**家长意见与回馈**：___________________________________________________________
 
-**家長簽名**：_____________________`;
+**家长签名**：_____________________`;
   </script>
 
   <!-- Main Application Logic Script -->
@@ -1353,7 +1353,7 @@ saveAs(blob, 'my_document.docx');
             handleFileInput(files[0]);
           } else {
             // Intelligent auto-reroute for multiple files
-            if (confirm(`系統偵測到您拖入 ${files.length} 個檔案。要切換至「批次轉換工具」分頁進行批次匯出嗎？`)) {
+            if (confirm(`系统检测到您拖入 ${files.length} 个文件。要切换至「批量转换工具」选项卡进行批量导出吗？`)) {
               switchTab('batch-tab');
               handleBatchFileInputs(files);
             }
@@ -1446,11 +1446,11 @@ saveAs(blob, 'my_document.docx');
       if (html.classList.contains('dark')) {
         html.classList.remove('dark');
         themeIcon.className = 'fa-regular fa-moon text-lg text-slate-600';
-        showNotification('success', '已切換為明亮模式');
+        showNotification('success', '已切换为明亮模式');
       } else {
         html.classList.add('dark');
         themeIcon.className = 'fa-regular fa-sun text-lg text-amber-400';
-        showNotification('success', '已切換為深色模式');
+        showNotification('success', '已切换为深色模式');
       }
     }
 
@@ -1492,7 +1492,7 @@ saveAs(blob, 'my_document.docx');
           const base64 = e.target.result;
           const mdImage = `\n![${file.name}](${base64})\n`;
           insertMarkdown(mdImage);
-          showNotification('success', `已將圖片 "${file.name}" 電腦端編碼嵌入編輯器`);
+          showNotification('success', `已将图片 "${file.name}" 电脑端编码嵌入编辑器`);
         };
         reader.readAsDataURL(file);
       } else {
@@ -1503,7 +1503,7 @@ saveAs(blob, 'my_document.docx');
           updatePreview();
           updateCounters();
           updateDocTitleFromMarkdown();
-          showNotification('success', `成功載入文件: ${file.name}`);
+          showNotification('success', `成功加载文件: ${file.name}`);
         };
         reader.readAsText(file);
       }
@@ -1587,10 +1587,10 @@ saveAs(blob, 'my_document.docx');
 
       // Map fonts accurately for web preview
       let fontStack = options.fontFamily;
-      if (fontStack.includes('BiauKai') || fontStack.includes('標楷體')) {
-        fontStack = `'BiauKai', '標楷體', 'DFKai-SB', Georgia, serif`;
-      } else if (fontStack.includes('PMingLiU') || fontStack.includes('新細明體')) {
-        fontStack = `'PMingLiU', '新細明體', Georgia, serif`;
+      if (fontStack.includes('KaiTi') || fontStack.includes('楷体')) {
+        fontStack = `'KaiTi', '楷体', Georgia, serif`;
+      } else if (fontStack.includes('SimSun') || fontStack.includes('宋体')) {
+        fontStack = `'SimSun', '宋体', Georgia, serif`;
       }
 
       // Append dynamic runtime user overrides and ensure headings inherit the customized font family
@@ -1627,13 +1627,13 @@ saveAs(blob, 'my_document.docx');
       updatePreview();
 
       // Dynamic Batch Tab Summary label update
-      const themeName = THEMES[themeKey]?.name || "自訂樣式";
+      const themeName = THEMES[themeKey]?.name || "自定义样式";
       const fontName = document.getElementById('font-select').options[document.getElementById('font-select').selectedIndex].text;
       const fontSize = options.fontSize + " pt";
       const paperSize = document.getElementById('papersize-select').value;
       const summaryElem = document.getElementById('batch-summary-style');
       if (summaryElem) {
-        summaryElem.textContent = `${themeName} / ${fontName} / ${fontSize} / ${paperSize} 頁面`;
+        summaryElem.textContent = `${themeName} / ${fontName} / ${fontSize} / ${paperSize} 页面`;
       }
     }
 
@@ -1653,14 +1653,14 @@ saveAs(blob, 'my_document.docx');
       }
       
       updateSimulatedPaperLayout();
-      showNotification('success', `已變更紙張方向為: ${orientation === 'portrait' ? '直向 (Portrait)' : '橫向 (Landscape)'}`);
+      showNotification('success', `已变更纸张方向为: ${orientation === 'portrait' ? '纵向 (Portrait)' : '横向 (Landscape)'}`);
     }
 
     // Handles paper size change and updates view
     function onPaperSizeChange() {
       updateSimulatedPaperLayout();
       onLayoutConfigChange();
-      showNotification('success', `已變更輸出尺寸規格為: ${document.getElementById('papersize-select').value}`);
+      showNotification('success', `已变更输出尺寸规格为: ${document.getElementById('papersize-select').value}`);
     }
 
     // Dynamic A3/A4 simulation configuration
@@ -1763,7 +1763,7 @@ saveAs(blob, 'my_document.docx');
       const mdText = document.getElementById('markdown-input').value;
       const localPreview = document.getElementById('editor-preview');
       if (mdText.trim() === "") {
-        localPreview.innerHTML = `<p class="text-slate-400 dark:text-slate-500 italic text-sm">無內容可預覽，請切換回編輯原始碼輸入文字。</p>`;
+        localPreview.innerHTML = `<p class="text-slate-400 dark:text-slate-500 italic text-sm">无内容可预览，请切换回编辑源码输入文字。</p>`;
       } else {
         localPreview.innerHTML = marked.parse(mdText);
       }
@@ -1789,7 +1789,7 @@ saveAs(blob, 'my_document.docx');
       const isUnmodified = allTemplates.includes(currentContent) || currentContent === "";
 
       if (!isUnmodified) {
-        if (!confirm("載入新範本將會完全覆蓋您目前修改過的文件，確定要繼續嗎？")) {
+        if (!confirm("加载新模板将会完全覆盖您目前修改过的文件，确定要继续吗？")) {
           return;
         }
       }
@@ -1813,24 +1813,24 @@ saveAs(blob, 'my_document.docx');
       updateDocTitleFromMarkdown();
       
       switchTab('editor-tab');
-      showNotification('success', '範本已成功載入！已為您切換至工作區。');
+      showNotification('success', '模板已成功加载！已为您切换至工作区。');
     }
 
     function clearEditor() {
-      if (confirm("確定要清除所有內容嗎？此操作不可還原。")) {
+      if (confirm("确定要清除所有内容吗？此操作不可还原。")) {
         document.getElementById('markdown-input').value = "";
         updatePreview();
         updateCounters();
-        showNotification('success', '編輯器已清空！');
+        showNotification('success', '编辑器已清空！');
       }
     }
 
     function insertTableTemplate() {
       const tableMarkdown = `
-| 標題一 | 標題二 | 標題三 |
+| 标题一 | 标题二 | 标题三 |
 | :--- | :---: | ---: |
-| 左對齊內容 | 居中對齊 | 右對齊內容 |
-| 內容列二 | 內容列二 | 內容列二 |
+| 左对齐内容 | 居中对齐 | 右对齐内容 |
+| 内容列二 | 内容列二 | 内容列二 |
 `;
       insertMarkdown(tableMarkdown);
     }
@@ -1842,7 +1842,7 @@ saveAs(blob, 'my_document.docx');
       const originalText = textarea.value;
       const selectedText = originalText.substring(start, end);
       
-      const placeholder = "這裡輸入文字";
+      const placeholder = "这里输入文字";
       const actualContent = selectedText || placeholder;
       const replacement = before + actualContent + after;
       
@@ -1860,6 +1860,12 @@ saveAs(blob, 'my_document.docx');
   <!-- 🚀 CORE TRANSLATION ENGINE: Native Markdown to standard OpenXML DOCX -->
   <!-- ================================================================= -->
   <script>
+    function decodeHtmlEntities(text) {
+      const textarea = document.createElement('textarea');
+      textarea.innerHTML = text;
+      return textarea.value;
+    }
+
     // Recursively parse inline markdown tokens into standard native Word runs
     function processInlineTokensToNative(tokens, themeOpts, fmt) {
       const runs = [];
@@ -1875,7 +1881,7 @@ saveAs(blob, 'my_document.docx');
       for (const token of tokens) {
         if (token.type === 'text') {
           runs.push(new docx.TextRun({
-            text: token.text,
+            text: decodeHtmlEntities(token.text),
             font: themeOpts.font,
             size: themeOpts.size * 2, // docx expects half-points
             color: themeOpts.color,
@@ -1907,7 +1913,7 @@ saveAs(blob, 'my_document.docx');
           runs.push(new docx.ExternalHyperlink({
             children: [
               new docx.TextRun({
-                text: token.text,
+                text: decodeHtmlEntities(token.text),
                 font: themeOpts.font,
                 size: themeOpts.size * 2,
                 color: '2563eb',
@@ -1941,7 +1947,7 @@ saveAs(blob, 'my_document.docx');
             } catch (e) {
               console.error("Native Image embed error", e);
               runs.push(new docx.TextRun({
-                text: `[圖片解碼失敗: ${token.text}]`,
+                text: `[图片解码失败: ${token.text}]`,
                 color: 'ff0000',
                 italics: true
               }));
@@ -1949,7 +1955,7 @@ saveAs(blob, 'my_document.docx');
           } else {
             // Placeholder text warning for non-local links that cross-origin-block in raw DOCX structures
             runs.push(new docx.TextRun({
-              text: `[外部連結圖片: ${token.text} - 請拖曳至編輯器轉成本地 Base64]`,
+              text: `[外部链接图片: ${token.text} - 请拖拽至编辑器转成本地 Base64]`,
               color: 'd97706',
               italics: true
             }));
@@ -1961,7 +1967,7 @@ saveAs(blob, 'my_document.docx');
             runs.push(...processInlineTokensToNative(token.tokens, themeOpts, fmt));
           } else if (token.text) {
             runs.push(new docx.TextRun({
-              text: token.text,
+              text: decodeHtmlEntities(token.text),
               font: themeOpts.font,
               size: themeOpts.size * 2,
               color: themeOpts.color,
@@ -1979,7 +1985,7 @@ saveAs(blob, 'my_document.docx');
     async function compileMarkdownToNativeDocument(mdText, documentTitle) {
       // Security Check: Verify window.docx is defined
       if (typeof window.docx === 'undefined') {
-        throw new Error('docx 編譯組件尚未完全載入，請稍候重試。若持續發生，請檢查您的網路連線是否正常。');
+        throw new Error('docx 编译组件尚未完全加载，请稍候重试。若持续发生，请检查您的网络连接是否正常。');
       }
       const docx = window.docx;
 
@@ -2086,6 +2092,7 @@ saveAs(blob, 'my_document.docx');
 
           docChildren.push(new docx.Paragraph({
             children: paragraphRuns,
+            alignment: themeKey === 'business' ? docx.AlignmentType.LEFT : undefined,
             indent: indent,
             spacing: {
               before: 0,
@@ -2206,6 +2213,8 @@ saveAs(blob, 'my_document.docx');
           });
 
         } else if (token.type === 'table') {
+          // Match the preview's horizontal cell padding (1 CSS px = 15 twips).
+          const cellMargin = (themeKey === 'business' ? 12 : themeKey === 'technical' ? 8 : 10) * 15;
           const headerRowCells = token.header.map(cell => {
             const cellRuns = processInlineTokensToNative(cell.tokens, {
               ...themeOpts,
@@ -2214,6 +2223,7 @@ saveAs(blob, 'my_document.docx');
 
             return new docx.TableCell({
               children: [new docx.Paragraph({ children: cellRuns, spacing: { before: 100, after: 100 } })],
+              margins: { left: cellMargin, right: cellMargin },
               shading: themeKey === 'business' ? { fill: '1e3a8a' } :
                        themeKey === 'technical' ? { fill: 'f1f5f9' } : undefined,
               borders: themeKey === 'academic' ? {
@@ -2241,6 +2251,7 @@ saveAs(blob, 'my_document.docx');
 
               return new docx.TableCell({
                 children: [new docx.Paragraph({ children: cellRuns, spacing: { before: 80, after: 80 } })],
+                margins: { left: cellMargin, right: cellMargin },
                 shading: rowFill,
                 borders: themeKey === 'academic' ? {
                   top: { style: docx.BorderStyle.NONE },
@@ -2279,8 +2290,8 @@ saveAs(blob, 'my_document.docx');
 
       // Pack true standard native WordprocessingML
       const nativeDocument = new docx.Document({
-        creator: document.getElementById('doc-creator').value || '系統管理員',
-        title: documentTitle || '專業報告',
+        creator: document.getElementById('doc-creator').value || '系统管理员',
+        title: documentTitle || '专业报告',
         sections: [{
           properties: {
             page: {
@@ -2308,28 +2319,28 @@ saveAs(blob, 'my_document.docx');
     async function exportToDocx() {
       try {
         if (typeof window.docx === 'undefined') {
-          showNotification('error', 'docx 編譯引擎尚未完全載入，請稍候重試。');
+          showNotification('error', 'docx 编译引擎尚未完全加载，请稍候重试。');
           return;
         }
 
         const mdText = document.getElementById('markdown-input').value;
         if (!mdText.trim()) {
-          showNotification('error', '編輯器內容為空，無法匯出！');
+          showNotification('error', '编辑器内容为空，无法导出！');
           return;
         }
 
-        const documentTitle = document.getElementById('doc-title').value || '專業文件';
-        showNotification('success', '正在編譯 Native OpenXML 文件二進位檔...');
+        const documentTitle = document.getElementById('doc-title').value || '专业文件';
+        showNotification('success', '正在编译 Native OpenXML 文件二进制文件...');
 
         const compiledDoc = await compileMarkdownToNativeDocument(mdText, documentTitle);
         const docxBlob = await docx.Packer.toBlob(compiledDoc);
 
         const filename = `${documentTitle}.docx`;
         saveAs(docxBlob, filename);
-        showNotification('success', `成功匯出標準標準 DOCX 格式: "${filename}"！`);
+        showNotification('success', `成功导出标准标准 DOCX 格式: "${filename}"！`);
       } catch (err) {
         console.error(err);
-        showNotification('error', '匯出時發生錯誤: ' + err.message);
+        showNotification('error', '导出时发生错误: ' + err.message);
       }
     }
   </script>
@@ -2348,19 +2359,19 @@ saveAs(blob, 'my_document.docx');
       const filesArray = Array.from(files);
       let newlyLoaded = 0;
 
-      showNotification('success', `開始載入 ${filesArray.length} 個檔案至待編譯佇列...`);
+      showNotification('success', `开始加载 ${filesArray.length} 个文件至待编译队列...`);
 
       for (const file of filesArray) {
         const ext = file.name.split('.').pop().toLowerCase();
         if (!['md', 'txt', 'markdown'].includes(ext)) {
-          showNotification('error', `格式不支援 (將跳過此檔案): ${file.name}`);
+          showNotification('error', `格式不支持 (将跳过此文件): ${file.name}`);
           continue;
         }
 
         // Prevent adding exact duplicate filenames
         const isDuplicate = batchQueue.some(item => item.name === file.name);
         if (isDuplicate) {
-          showNotification('error', `檔案已在庫，跳過重複檔: ${file.name}`);
+          showNotification('error', `文件已在库，跳过重复文件: ${file.name}`);
           continue;
         }
 
@@ -2378,12 +2389,12 @@ saveAs(blob, 'my_document.docx');
           newlyLoaded++;
         } catch (fileErr) {
           console.error(fileErr);
-          showNotification('error', `檔案讀取錯誤: ${file.name}`);
+          showNotification('error', `文件读取错误: ${file.name}`);
         }
       }
 
       if (newlyLoaded > 0) {
-        showNotification('success', `成功新增 ${newlyLoaded} 個 Markdown 檔案至佇列！`);
+        showNotification('success', `成功新增 ${newlyLoaded} 个 Markdown 文件至队列！`);
       }
       renderBatchQueue();
     }
@@ -2401,10 +2412,10 @@ saveAs(blob, 'my_document.docx');
     // Clear entire batch conversion queue list
     function clearBatchQueue() {
       if (batchQueue.length === 0) return;
-      if (confirm("確定要清空佇列中所有的檔案嗎？此操作不可還原。")) {
+      if (confirm("确定要清空队列中所有的文件吗？此操作不可还原。")) {
         batchQueue = [];
         renderBatchQueue();
-        showNotification('success', '轉換佇列已清空！');
+        showNotification('success', '转换队列已清空！');
       }
     }
 
@@ -2427,7 +2438,7 @@ saveAs(blob, 'my_document.docx');
         container.innerHTML = `
           <div id="batch-empty-state" class="h-full flex flex-col items-center justify-center text-slate-400 py-12">
             <i class="fa-regular fa-folder text-3xl mb-2 text-slate-300 dark:text-slate-700"></i>
-            <p class="text-xs">目前無上傳檔案，請拖曳檔案進來開始批次轉換工作</p>
+            <p class="text-xs">目前无上传文件，请拖拽文件进来开始批量转换工作</p>
           </div>
         `;
         startBtn.disabled = true;
@@ -2446,11 +2457,11 @@ saveAs(blob, 'my_document.docx');
         if (file.status === 'ready') {
           statusBadge = `<span class="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400 border border-slate-200 dark:border-slate-700">等待中</span>`;
         } else if (file.status === 'converting') {
-          statusBadge = `<span class="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400 border border-blue-200 dark:border-blue-800 animate-pulse flex items-center gap-1"><i class="fa-solid fa-spinner animate-spin"></i>轉換中</span>`;
+          statusBadge = `<span class="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400 border border-blue-200 dark:border-blue-800 animate-pulse flex items-center gap-1"><i class="fa-solid fa-spinner animate-spin"></i>转换中</span>`;
         } else if (file.status === 'done') {
           statusBadge = `<span class="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 flex items-center gap-1"><i class="fa-solid fa-check"></i>完成</span>`;
         } else if (file.status === 'error') {
-          statusBadge = `<span class="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-red-50 text-red-650 dark:bg-red-950/40 dark:text-red-400 border border-red-200 dark:border-red-800 flex items-center gap-1"><i class="fa-solid fa-triangle-exclamation"></i>失敗</span>`;
+          statusBadge = `<span class="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-red-50 text-red-650 dark:bg-red-950/40 dark:text-red-400 border border-red-200 dark:border-red-800 flex items-center gap-1"><i class="fa-solid fa-triangle-exclamation"></i>失败</span>`;
         }
 
         const fileItem = document.createElement('div');
@@ -2465,13 +2476,13 @@ saveAs(blob, 'my_document.docx');
               <p class="text-[10px] md:text-xs text-slate-400 mt-0.5 flex gap-2">
                 <span>大小: ${sizeKB} KB</span>
                 <span>•</span>
-                <span>字數: ${file.wordCount.toLocaleString()}</span>
+                <span>字数: ${file.wordCount.toLocaleString()}</span>
               </p>
             </div>
           </div>
           <div class="flex items-center gap-3">
             ${statusBadge}
-            <button onclick="removeFileFromQueue(${index})" class="text-slate-400 hover:text-red-500 p-1.5 rounded-lg transition" title="移除此檔案">
+            <button onclick="removeFileFromQueue(${index})" class="text-slate-400 hover:text-red-500 p-1.5 rounded-lg transition" title="移除此文件">
               <i class="fa-solid fa-xmark text-sm"></i>
             </button>
           </div>
@@ -2483,22 +2494,22 @@ saveAs(blob, 'my_document.docx');
     // Execute batch conversion logic with master native Word generator
     async function exportBatchToDocx() {
       if (typeof window.docx === 'undefined') {
-        showNotification('error', 'docx 編譯引擎尚未完全載入，無法批次匯出！');
+        showNotification('error', 'docx 编译引擎尚未完全加载，无法批量导出！');
         return;
       }
 
       if (batchQueue.length === 0) {
-        showNotification('error', '佇列中沒有可轉換的檔案！');
+        showNotification('error', '队列中没有可转换的文件！');
         return;
       }
 
       const startBtn = document.getElementById('batch-export-btn');
       startBtn.disabled = true;
-      startBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin mr-1"></i> 正在編譯打包中...`;
+      startBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin mr-1"></i> 正在编译打包中...`;
 
       try {
         const masterZip = new JSZip();
-        showNotification('success', `批次處理開始！正在以 Native 規格編譯 ${batchQueue.length} 個檔案...`);
+        showNotification('success', `批量处理开始！正在以 Native 规格编译 ${batchQueue.length} 个文件...`);
 
         for (let i = 0; i < batchQueue.length; i++) {
           const fileItem = batchQueue[i];
@@ -2539,21 +2550,21 @@ saveAs(blob, 'my_document.docx');
           renderBatchQueue();
         }
 
-        showNotification('success', `所有檔案編譯完成，正在打包成 ZIP 檔案...`);
+        showNotification('success', `所有文件编译完成，正在打包成 ZIP 文件...`);
 
         // Generate master ZIP Blob
         const zipBlob = await masterZip.generateAsync({ type: "blob" });
         const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-        const zipName = `標準排版批次匯出_${dateStr}.zip`;
+        const zipName = `标准排版批量导出_${dateStr}.zip`;
 
         saveAs(zipBlob, zipName);
-        showNotification('success', `成功下載標準 DOCX ZIP 壓縮包: ${zipName}`);
+        showNotification('success', `成功下载标准 DOCX ZIP 压缩包: ${zipName}`);
       } catch (err) {
         console.error(err);
-        showNotification('error', `批次轉換時發生錯誤: ` + err.message);
+        showNotification('error', `批量转换时发生错误: ` + err.message);
       } finally {
         startBtn.disabled = false;
-        startBtn.innerHTML = `<i class="fa-solid fa-file-shield"></i> <span>開始批次編譯並打包下載</span>`;
+        startBtn.innerHTML = `<i class="fa-solid fa-file-shield"></i> <span>开始批量编译并打包下载</span>`;
       }
     }
   </script>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>DOCX 段落对齐回归测试</title>
+</head>
+<body>
+  <h1>DOCX 段落对齐回归测试</h1>
+  <pre id="results">正在加载转换器…</pre>
+  <iframe id="converter" src="../index.html" hidden></iframe>
+  <script>
+    document.getElementById('converter').addEventListener('load', async function() {
+      const app = this.contentWindow;
+      const ns = 'http://schemas.openxmlformats.org/wordprocessingml/2006/main';
+      const markdown = '# F9 全流程研发与交付规范手册\n\n版本：2.0（流程确认版）\n修订日期：2026-10-16\n适用范围：F9 产品、实施、测试部，以及前后端研发与交付人员。\n编写依据：管理流程、Jira 状态与流程图、Git 历史及 CI 配置。\n\n## 1. 目的、范围与使用规则\n\n正文内容应自然排列，不拉伸短行。';
+      const lines = [];
+      let failures = 0;
+      function check(name, passed) {
+        if (!passed) failures++;
+        lines.push((passed ? 'PASS ' : 'FAIL ') + name);
+      }
+
+      try {
+        app.document.getElementById('theme-select').value = 'business';
+        app.document.getElementById('markdown-input').value = markdown;
+        app.onLayoutConfigChange();
+        const previewParagraphs = Array.from(app.document.querySelectorAll('#preview-content p'));
+        check('商务主题预览段落左对齐', previewParagraphs.length === 2 && previewParagraphs.every(p => app.getComputedStyle(p).textAlign === 'left'));
+
+        const doc = await app.compileMarkdownToNativeDocument(markdown, '段落对齐测试');
+        const blob = await app.docx.Packer.toBlob(doc);
+        const zip = await app.JSZip.loadAsync(blob);
+        const xml = await zip.file('word/document.xml').async('string');
+        const parsed = new DOMParser().parseFromString(xml, 'application/xml');
+        const paragraphs = Array.from(parsed.getElementsByTagNameNS(ns, 'p'));
+        const text = p => Array.from(p.getElementsByTagNameNS(ns, 't'), node => node.textContent).join('');
+        const metadata = paragraphs.find(p => text(p).startsWith('版本：'));
+        const body = paragraphs.find(p => text(p).startsWith('正文内容'));
+        const alignment = p => p?.getElementsByTagNameNS(ns, 'jc')[0]?.getAttributeNS(ns, 'val');
+        check('DOCX 版本与日期段落显式左对齐', alignment(metadata) === 'left');
+        check('DOCX 正文段落显式左对齐', alignment(body) === 'left');
+        check('头部信息仍保留原有换行', metadata?.getElementsByTagNameNS(ns, 'br').length === 3);
+        lines.push('\n' + (4 - failures) + '/4 通过');
+      } catch (error) {
+        failures++;
+        lines.push('ERROR ' + error.stack);
+      }
+
+      document.getElementById('results').textContent = lines.join('\n');
+      document.title = (failures ? 'FAIL' : 'PASS') + ' DOCX 段落对齐回归测试';
+    });
+  </script>
+</body>
+</html>
